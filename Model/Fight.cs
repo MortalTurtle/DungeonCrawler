@@ -1,4 +1,5 @@
 ﻿using DungeonCrawler.Controls;
+using DungeonCrawler.Controls.FightActions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace DungeonCrawler.Model
         {
             this.player = player;
             this.enemy = enemy;
+            FightActionsDict.GenerateActions(player);
             Interface.UpdateInterfaceOnFightStart(player, enemy);
             HasEnded = false;
         }
@@ -23,8 +25,17 @@ namespace DungeonCrawler.Model
         public IAttackButton AttackButton { get; set; }
         public void EndTurn()
         {
+            PerformAction(AttackButton.FightAction, ActionTarget.Enemy);
             enemy.Attack(player);
             Interface.UpdateInterfaceOnEOT();
+        }
+
+        public void PerformAction(ActionType action, ActionTarget target)
+        {
+            if (action == ActionType.None || target == ActionTarget.None)
+                return;
+            Creature targetCreature = target == ActionTarget.Self ? player : enemy;
+            FightActionsDict.Perform(action, targetCreature);
         }
     }
 }

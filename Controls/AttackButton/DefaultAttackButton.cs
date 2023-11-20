@@ -9,8 +9,7 @@ namespace DungeonCrawler.Controls.AttackButtons
 {
     public class DefaultAttackButton : AttackButton
     {
-        private static AttackFightAction defaultAction = new AttackFightAction(ActionTarget.Enemy,ActionType.DefaultAttack);
-        public override AttackFightAction FightAction => defaultAction;
+        public override ActionType FightAction => ActionType.DefaultAttack;
         public DefaultAttackButton(Form form) : base(form) { }
     }
 }

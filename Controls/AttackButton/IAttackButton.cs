@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.Controls.FightActions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace DungeonCrawler.Controls
     public interface IAttackButton
     {
         Button Button { get; }
+        ActionType FightAction { get; }
     }
 }
