@@ -19,10 +19,10 @@ namespace DungeonCrawler
             this.Button = ControlsFactory.GetAttackButton(form);
             Button.Click += (sender, args) =>
             {
-                Button.BackColor = Color.DimGray;
                 var lastButton = Game.CurrentGame.CurrentFight.AttackButton;
                 if (lastButton != null)
                     lastButton.Button.BackColor = Color.White;
+                Button.BackColor = Color.DimGray;
                 Game.CurrentGame.CurrentFight.AttackButton = this;
             };
         }
