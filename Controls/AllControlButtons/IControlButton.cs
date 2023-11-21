@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Controls.FightActions
+namespace DungeonCrawler.Controls
 {
-    public enum ActionType
+    public interface IControlButton
     {
-        None,
-        DefaultAttack
+        Button Button { get; }
     }
 }

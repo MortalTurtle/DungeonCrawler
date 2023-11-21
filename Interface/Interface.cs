@@ -20,8 +20,7 @@ namespace DungeonCrawler
         private static TextBox mainTextBox;
 
         private static IHPBars hpBars;
-        private static IEndTurnButton endTurnButton;
-        private static IAttackButtons attackButtons;
+        private static List<IControlButton> controlButtons;
 
         private static void UpdateStartButton()
         {
@@ -67,21 +66,14 @@ namespace DungeonCrawler
             form.Controls.Clear();
             form.Controls.Add(mainLabel);
             AddHPBars(player, enemy);
-            AddEOTButton();
-            AddAttackButtons();
+            AddControlButtons();
         }
 
-        private static void AddAttackButtons()
+        private static void AddControlButtons()
         {
-            attackButtons = new AllAttackButtons(form);
-            foreach (var button in attackButtons.attackButtons)
+            controlButtons = new AllButtons(form).Buttons;
+            foreach (var button in controlButtons)
                 form.Controls.Add(button.Button);
-        }
-
-        private static void AddEOTButton()
-        {
-            endTurnButton = new DefaultEndTurnButton(form);
-            form.Controls.Add(endTurnButton.Button);
         }
 
         private static void AddHPBars(Player player, Creature enemy)

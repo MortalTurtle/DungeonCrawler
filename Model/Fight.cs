@@ -1,5 +1,6 @@
 ﻿using DungeonCrawler.Controls;
 using DungeonCrawler.Controls.FightActions;
+using DungeonCrawler.Controls.TargetButton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,29 +14,29 @@ namespace DungeonCrawler.Model
         private Player player { get; set; }
         private Creature enemy { get; set; }
         public bool HasEnded { get; private set; }
-        public Fight(Player player , Creature enemy)
+        public Fight(Player player, Creature enemy)
         {
             this.player = player;
             this.enemy = enemy;
-            FightActionsDict.GenerateActions(player);
+            TargetButton = DefaultTargetButton.Instance;
             Interface.UpdateInterfaceOnFightStart(player, enemy);
             HasEnded = false;
         }
-
-        public IAttackButton AttackButton { get; set; }
+        public ITargetButton TargetButton { get; set; }
+        public IActionButton ActionButton { get; set; }
         public void EndTurn()
         {
-            PerformAction(AttackButton.FightAction, ActionTarget.Enemy);
             enemy.Attack(player);
+            PerformAction(TargetButton.Target);
             Interface.UpdateInterfaceOnEOT();
         }
 
-        public void PerformAction(ActionType action, ActionTarget target)
+        public void PerformAction( ActionTarget target)
         {
-            if (action == ActionType.None || target == ActionTarget.None)
+            if (target == ActionTarget.None || ActionButton == null)
                 return;
             Creature targetCreature = target == ActionTarget.Self ? player : enemy;
-            FightActionsDict.Perform(action, targetCreature);
+            ActionButton.Action.Invoke(player, targetCreature);
         }
     }
 }

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Controls
+namespace DungeonCrawler
 {
-    public interface IAttackButton
+    public interface ITargetButton
     {
         Button Button { get; }
-        ActionType FightAction { get; }
+        ActionTarget Target { get; }
     }
 }

@@ -64,5 +64,14 @@ namespace DungeonCrawler
                 Size = new Size(100, 25),
             };
         }
+
+        public static Button GetTargetButton(Form form)
+        {
+            return new Button()
+            {
+                Font = new Font(FontFamily.GenericSansSerif, 9),
+                Size = new Size(100, 25),
+            };
+        }
     }
 }
