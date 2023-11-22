@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    [Default]
-    public class DefaultEndTurnButton : EndTurnButton
+    internal class DefaultInterface<TTheme> : AbstractInterface<TTheme>
+        where TTheme : ITheme, new()
     {
-        public DefaultEndTurnButton(Form form) :  base(form)
+        public DefaultInterface() : base()
         { }
     }
 }

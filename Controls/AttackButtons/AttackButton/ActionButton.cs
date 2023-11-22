@@ -14,9 +14,11 @@ namespace DungeonCrawler
     {
         public Button Button {get; private set;}
         public abstract Action<Creature, Creature> Action { get; }
+        public abstract string ButtonText { get; }
         public ActionButton(Form form)
         {
             this.Button = ControlsFactory.GetAttackButton(form);
+            Button.Text = ButtonText;
             Button.Click += (sender, args) =>
             {
                 var lastButton = Game.CurrentGame.CurrentFight.ActionButton;

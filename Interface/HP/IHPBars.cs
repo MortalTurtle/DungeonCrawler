@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Controls
+namespace DungeonCrawler
 {
     public interface IHPBars
     {
-        HpLabel playerHp { get; }
-        HpLabel enemyHp { get; }
+        HPLabel PlayerHP { get; }
+        HPLabel EnemyHP { get; }
         public void NewBars();
         public void UpdateBars();
     }

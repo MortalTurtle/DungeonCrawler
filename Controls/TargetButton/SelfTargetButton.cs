@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler.Controls.TargetButton
 {
+    [Default]
     internal class SelfTargetButton : TargetButton
     {
         public override ActionTarget Target => ActionTarget.Self;

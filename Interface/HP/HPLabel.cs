@@ -6,16 +6,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Controls
+namespace DungeonCrawler
 {
-    public abstract class HpLabel
+    public abstract class HPLabel
     {
-        public HpLabel(Point location)
+        public abstract Point Location { get; }
+        public HPLabel()
         {
             Label = new Label()
             {
                 Size = DefaultParameters.DefaultHpSize,
-                Location = location,
+                Location = this.Location,
                 ForeColor = Color.DarkRed,
                 Text = "",
             };

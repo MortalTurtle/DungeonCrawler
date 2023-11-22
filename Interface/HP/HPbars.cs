@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace DungeonCrawler
 {
     [Default]
-    public class DefaultEndTurnButton : EndTurnButton
+    public class HPBars : AbstractHPBars<PlayerHP, EnemyHP>
     {
-        public DefaultEndTurnButton(Form form) :  base(form)
+        public HPBars(Player player, Creature enemy) : base(player, enemy)
         { }
     }
 }

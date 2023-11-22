@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class PlayerHp : HpLabel
+    public class PlayerHP : HPLabel
     {
-        public PlayerHp() : base(DefaultParameters.PlayerHpLocation)
-        { }
+        public override Point Location => DefaultParameters.PlayerHpLocation;
     }
 }

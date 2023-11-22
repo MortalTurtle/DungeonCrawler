@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Controls
+namespace DungeonCrawler
 {
-    public interface IControlButton
-    {
-        Button Button { get; }
-    }
+    public class DefaultAttribute : ThemeAttribute
+    { }
 }

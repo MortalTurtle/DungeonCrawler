@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler.Controls.TargetButton
 {
+    [Default]
     public class EnemyTargetButton : TargetButton
     {
         public override ActionTarget Target => ActionTarget.Enemy;

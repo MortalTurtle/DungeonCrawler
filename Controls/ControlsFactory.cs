@@ -39,7 +39,6 @@ namespace DungeonCrawler
                 Font = new Font(FontFamily.GenericSansSerif, 30)
             };
         }
-
         public static Button GetEndTurnButton(Form form)
         {
             if (endTurnButton != null)
@@ -53,7 +52,6 @@ namespace DungeonCrawler
             };
             return endTurnButton;
         }
-
         public static Button GetAttackButton(Form form)
         {
             return new Button()
@@ -64,7 +62,6 @@ namespace DungeonCrawler
                 Size = new Size(100, 25),
             };
         }
-
         public static Button GetTargetButton(Form form)
         {
             return new Button()

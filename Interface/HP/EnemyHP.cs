@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    [Default]
-    public class DefaultEndTurnButton : EndTurnButton
+    public class EnemyHP : HPLabel
     {
-        public DefaultEndTurnButton(Form form) :  base(form)
-        { }
+        public override Point Location => new Point(600, 100);
     }
 }
