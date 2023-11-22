@@ -16,10 +16,7 @@ namespace DungeonCrawler
         public Button GameStartButton { get; set; }
         public Label MainLabel { get; set; }
         public TextBox MainTextBox { get; set; }
-        public void EditForm(Form form)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void EditForm(Form form);
         public void GenerateMainButtons(Form form)
         {
             MainButton = ControlsFactory.GetMainButton(form);
@@ -33,10 +30,10 @@ namespace DungeonCrawler
                 Font = new Font(FontFamily.GenericSansSerif, 25)
             };
             ControlButtons = GenerateControlButtonsLayout(form).Buttons;
+            EditForm(form);
             EditMainButtons();
         }
         public abstract IButtonLayout GenerateControlButtonsLayout(Form form);
-
         public abstract void EditMainButtons();
         public void GenerateHPBars(Player player, Creature enemy)
         {

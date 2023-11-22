@@ -10,8 +10,13 @@ namespace DungeonCrawler
     [Default]
     public class DefaultTheme : AbstractTheme
     {
+        public override void EditForm(Form form)
+        {
+        }
+
         public override void EditMainButtons()
-        { }
+        {
+        }
 
         public override IButtonLayout GenerateControlButtonsLayout(Form form)
         {

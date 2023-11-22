@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class ThemeAttribute : Attribute
+    public abstract class ThemeAttribute : Attribute
     { }
 }

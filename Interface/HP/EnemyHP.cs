@@ -9,5 +9,9 @@ namespace DungeonCrawler
     public class EnemyHP : HPLabel
     {
         public override Point Location => new Point(600, 100);
+        public EnemyHP() 
+        {
+            Label.ForeColor = Color.Chocolate;
+        }
     }
 }
