@@ -8,19 +8,12 @@ using System.Threading.Tasks;
 namespace DungeonCrawler
 {
     [Default]
+    [ThemeName("Default Theme")]
     public class DefaultTheme : AbstractTheme
     {
         public override void EditForm(Form form)
-        {
-        }
-
+        { }
         public override void EditMainButtons()
-        {
-        }
-
-        public override IButtonLayout GenerateControlButtonsLayout(Form form)
-        {
-            return new DefaultButtonLayout(form);
-        }
+        { }
     }
 }

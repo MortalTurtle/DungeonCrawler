@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.Model.Weapons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,8 @@ namespace DungeonCrawler
         public override int HPMax => 50;
 
         public override int Damage => 6;
+
+        private IWeapon weapon = new OldFlail();
+        public override IWeapon Weapon => weapon;
     }
 }

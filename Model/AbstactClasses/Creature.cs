@@ -1,4 +1,5 @@
 ﻿using DungeonCrawler.Controls;
+using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DungeonCrawler
     public abstract class Creature
     {
         public abstract string Name { get; }
+        public abstract IWeapon Weapon { get; }
         private int hp;
         public int HP
         {
@@ -24,7 +26,7 @@ namespace DungeonCrawler
         public abstract int Damage { get; }
         public void Attack(Creature other)
         {
-            other.ReceiveHit(this.Damage);
+            this.Weapon.Attack(other);
         }
 
         public Creature()

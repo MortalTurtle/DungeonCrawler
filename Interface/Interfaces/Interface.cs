@@ -13,7 +13,6 @@ namespace DungeonCrawler
 {
     public static class Interface
     {
-        private static Form form;
         private static IInterface currentInterface;
         public static void InitializeInterface (Form form, IInterface ready)
         {

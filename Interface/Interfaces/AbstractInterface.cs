@@ -70,7 +70,7 @@ namespace DungeonCrawler
         private void AddHPBars(Player player, Creature enemy)
         {
             theme.GenerateHPBars(player, enemy);
-            hpBars.UpdateBars();
+            hpBars.UpdateBars(player, enemy);
             form.Controls.Add(hpBars.PlayerHP.Label);
             form.Controls.Add(hpBars.EnemyHP.Label);
         }

@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DungeonCrawler
 {
@@ -17,6 +19,16 @@ namespace DungeonCrawler
         public Label MainLabel { get; set; }
         public TextBox MainTextBox { get; set; }
         public abstract void EditForm(Form form);
+
+        private readonly Type[]? sameThemeAttribute;
+        public AbstractTheme()
+        {
+            var thisAttribute = this.GetType().GetCustomAttribute(typeof(ThemeAttribute));
+            sameThemeAttribute = Assembly.GetExecutingAssembly().GetTypes()
+                .Where( x => x.GetCustomAttributes().Contains(thisAttribute) &&
+                !x.GetTypeInfo().IsAbstract).ToArray();
+        }
+
         public void GenerateMainButtons(Form form)
         {
             MainButton = ControlsFactory.GetMainButton(form);
@@ -29,15 +41,26 @@ namespace DungeonCrawler
                 Text = "Confirm",
                 Font = new Font(FontFamily.GenericSansSerif, 25)
             };
-            ControlButtons = GenerateControlButtonsLayout(form).Buttons;
+            GenerateControlButtonsLayout(form);
             EditForm(form);
             EditMainButtons();
         }
-        public abstract IButtonLayout GenerateControlButtonsLayout(Form form);
-        public abstract void EditMainButtons();
-        public void GenerateHPBars(Player player, Creature enemy)
+        private void GenerateControlButtonsLayout(Form form)
         {
-            HPBars = new HPBars(player, enemy);
+            ControlButtons = new();
+            var instances = sameThemeAttribute.Where(
+                x => x.GetInterfaces().Contains(typeof(IControlButton)))
+                .Select(x => Activator.CreateInstance(x, form) as IControlButton).ToArray();
+            ControlButtons.AddRange(instances);
+        }
+        public abstract void EditMainButtons();
+        public void GenerateHPBars(Creature player, Creature enemy)
+        {
+            var hpBarInstances = sameThemeAttribute.Where(x =>
+            x.GetInterfaces().Contains(typeof(IHPBars))).Select(x => Activator.CreateInstance(x) as IHPBars).ToArray();
+            if (hpBarInstances.Any())
+                HPBars = hpBarInstances[0];
+            else HPBars = new DefaultHPBars();
         }
     }
 }

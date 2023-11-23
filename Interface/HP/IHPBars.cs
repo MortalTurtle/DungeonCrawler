@@ -11,6 +11,7 @@ namespace DungeonCrawler
         HPLabel PlayerHP { get; }
         HPLabel EnemyHP { get; }
         public void NewBars();
+        public void UpdateBars(Creature player, Creature enemy);
         public void UpdateBars();
     }
 }

@@ -18,7 +18,6 @@ namespace DungeonCrawler
         TextBox MainTextBox { get; }
         void EditForm(Form form);
         void GenerateMainButtons(Form form);
-        void GenerateHPBars(Player player, Creature creature);
-        IButtonLayout GenerateControlButtonsLayout(Form form);
+        void GenerateHPBars(Creature player, Creature enemy);
     }
 }

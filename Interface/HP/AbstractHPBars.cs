@@ -12,13 +12,11 @@ namespace DungeonCrawler
         where TEnemyHP : HPLabel, new()
     {
         public HPLabel PlayerHP { get; private set; }
-        private readonly Player player;
+        private Creature player { get; set; }
         public HPLabel EnemyHP { get; private set; }
-        private readonly Creature enemy;
-        public AbstractHPBars(Player player, Creature enemy)
+        private Creature enemy { get; set; }
+        public AbstractHPBars()
         {
-            this.player = player;
-            this.enemy = enemy;
             PlayerHP = new TPlayerHp();
             EnemyHP = new TEnemyHP();
         }
@@ -31,8 +29,17 @@ namespace DungeonCrawler
 
         public void UpdateBars()
         {
+            if (player == null || enemy == null)
+                throw new Exception("HP bars are not connected to any entity");
             PlayerHP.Update(player);
             EnemyHP.Update(enemy);
+        }
+
+        public void UpdateBars(Creature player, Creature enemy)
+        {
+            this.player = player;
+            this.enemy = enemy;
+            UpdateBars();
         }
     }
 }

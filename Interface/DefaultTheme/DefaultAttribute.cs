@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    [Default]
-    public class HPBars : AbstractHPBars<PlayerHP, EnemyHP>
+    public class DefaultAttribute : ThemeAttribute
     {
-        public HPBars(Player player, Creature enemy) : base(player, enemy)
-        { }
     }
 }
