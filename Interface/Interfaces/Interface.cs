@@ -29,5 +29,10 @@ namespace DungeonCrawler
         {
             currentInterface.UpdateInterfaceOnEOT();
         }
+
+        public static void Alert(string msg)
+        {
+            currentInterface.Alert(msg);
+        }
     }
 }

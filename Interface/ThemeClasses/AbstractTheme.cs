@@ -11,13 +11,14 @@ namespace DungeonCrawler
 {
     public abstract class AbstractTheme : ITheme
     {
-        public Color MainColor { get; set; }
-        public IHPBars HPBars { get; set; }
-        public List<IControlButton> ControlButtons { get; set; }
-        public Button MainButton { get; set; }
-        public Button GameStartButton { get; set; }
-        public Label MainLabel { get; set; }
-        public TextBox MainTextBox { get; set; }
+        public Color MainColor { get; private set; }
+        public List<IControlButton> ControlButtons { get;private set; }
+        public List<IEnemyStatLabel> EnemyStats {get;private set; }
+        public List<IPLayerStatLabel> PlayerStats { get;private set; }
+        public Button MainButton { get; private set; }
+        public Button GameStartButton { get; private set; }
+        public Label MainLabel { get; private set; }
+        public TextBox MainTextBox { get; private set; }
         public abstract void EditForm(Form form);
 
         private readonly Type[]? sameThemeAttribute;
@@ -48,19 +49,21 @@ namespace DungeonCrawler
         private void GenerateControlButtonsLayout(Form form)
         {
             ControlButtons = new();
-            var instances = sameThemeAttribute.Where(
-                x => x.GetInterfaces().Contains(typeof(IControlButton)))
+            var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
                 .Select(x => Activator.CreateInstance(x, form) as IControlButton).ToArray();
             ControlButtons.AddRange(instances);
         }
         public abstract void EditMainButtons();
-        public void GenerateHPBars(Creature player, Creature enemy)
+        public void GenerateStatLabels(Creature player, Creature enemy)
         {
-            var hpBarInstances = sameThemeAttribute.Where(x =>
-            x.GetInterfaces().Contains(typeof(IHPBars))).Select(x => Activator.CreateInstance(x) as IHPBars).ToArray();
-            if (hpBarInstances.Any())
-                HPBars = hpBarInstances[0];
-            else HPBars = new DefaultHPBars();
+            EnemyStats = new();
+            PlayerStats = new();
+            var playerStatInstances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IPLayerStatLabel)))
+            .Select(x => Activator.CreateInstance(x) as IPLayerStatLabel).ToArray();
+            var enemyStatInstances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
+            .Select(x => Activator.CreateInstance(x) as IEnemyStatLabel).ToArray();
+            PlayerStats.AddRange(playerStatInstances);
+            EnemyStats.AddRange(enemyStatInstances);
         }
     }
 }

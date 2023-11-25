@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    [Default]
-    public class DefaultHPBars : AbstractHPBars<PlayerHP, EnemyHP>
-    { }
+    public interface IStatLabel
+    {
+        Label Label { get; }
+        void Update(Creature creature);
+        void Update();
+    }
 }

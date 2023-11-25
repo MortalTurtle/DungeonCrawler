@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class EnemyHP : HPLabel
+    [Default]
+    public class EnemyHP : HPLabel, IEnemyStatLabel
     {
         public override Point Location => new Point(600, 100);
         public EnemyHP() 

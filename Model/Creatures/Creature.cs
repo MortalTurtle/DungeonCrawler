@@ -13,6 +13,20 @@ namespace DungeonCrawler
         public abstract string Name { get; }
         public abstract IWeapon Weapon { get; }
         private int hp;
+        private int fatigue;
+        public int Fatigue
+        {
+            get { return fatigue; }
+            private set 
+            {
+                if (value > MaxFatigue)
+                    fatigue = MaxFatigue;
+                if (value < 0)
+                    fatigue = 0;
+                else fatigue = value;
+            }
+        }
+
         public int HP
         {
             get { return hp; }
@@ -23,15 +37,25 @@ namespace DungeonCrawler
             }
         }
         public abstract int HPMax { get; }
-        public abstract int Damage { get; }
+        public abstract int MaxFatigue { get; }
         public void Attack(Creature other)
         {
+            Fatigue += Weapon.AttackCost;
             this.Weapon.Attack(other);
         }
 
         public Creature()
         {
             hp = HPMax;
+        }
+
+        public void Rest()
+        {
+            Fatigue -= 4;
+        }
+
+        public void UpdateOnEOT()
+        {
         }
 
         public void ReceiveHit(int damage)

@@ -11,13 +11,13 @@ namespace DungeonCrawler.Model
 {
     public class Fight
     {
-        private Player player { get; set; }
-        private Creature enemy { get; set; }
+        public Player Player { get; set; }
+        public Creature Enemy { get; set; }
         public bool HasEnded { get; private set; }
         public Fight(Player player, Creature enemy)
         {
-            this.player = player;
-            this.enemy = enemy;
+            this.Player = player;
+            this.Enemy = enemy;
             TargetButton = DefaultTargetButton.Instance;
             Interface.UpdateInterfaceOnFightStart(player, enemy);
             HasEnded = false;
@@ -26,8 +26,20 @@ namespace DungeonCrawler.Model
         public IActionButton ActionButton { get; set; }
         public void EndTurn()
         {
-            enemy.Attack(player);
+            if (Enemy.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
+            {
+                Enemy.Attack(Player);
+            }
+            else Enemy.Rest();
+            if (ActionButton != null && !ActionButton.IsAbleToPerformAction())
+            {
+                Interface.Alert(ActionButton.FailMessage);
+                ChangeActionButton(null);
+                return;
+            }
             PerformAction(TargetButton.Target);
+            Player.UpdateOnEOT();
+            Enemy.UpdateOnEOT();
             Interface.UpdateInterfaceOnEOT();
         }
 
@@ -35,8 +47,25 @@ namespace DungeonCrawler.Model
         {
             if (target == ActionTarget.None || ActionButton == null)
                 return;
-            Creature targetCreature = target == ActionTarget.Self ? player : enemy;
-            ActionButton.Action.Invoke(player, targetCreature);
+            Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
+            ActionButton.Action.Invoke(Player, targetCreature);
+        }
+
+        public void ChangeActionButton(IActionButton other)
+        {
+            var lastButton = ActionButton;
+            if (lastButton == other)
+            {
+                Game.CurrentGame.CurrentFight.ActionButton = null;
+                lastButton.Button.BackColor = Color.White;
+                return;
+            }
+            if (lastButton != null)
+                lastButton.Button.BackColor = Color.White;
+            Game.CurrentGame.CurrentFight.ActionButton = other;
+            if (other == null)
+                return;
+            other.Button.BackColor = Color.DimGray;
         }
     }
 }

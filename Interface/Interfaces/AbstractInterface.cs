@@ -17,8 +17,8 @@ namespace DungeonCrawler
         private Button startButton => theme.GameStartButton;
         private Label mainLabel => theme.MainLabel;
         private TextBox mainTextBox => theme.MainTextBox;
-
-        private IHPBars hpBars => theme.HPBars;
+        private List<IEnemyStatLabel> enemyStats => theme.EnemyStats;
+        private List<IPLayerStatLabel> playerStats => theme.PlayerStats; 
         private List<IControlButton> controlButtons => theme.ControlButtons;
 
         public AbstractInterface()
@@ -57,7 +57,8 @@ namespace DungeonCrawler
         {
             form.Controls.Clear();
             form.Controls.Add(mainLabel);
-            AddHPBars(player, enemy);
+            theme.GenerateStatLabels(player, enemy);
+            AddStatLabels(player, enemy);
             AddControlButtons();
         }
 
@@ -67,17 +68,32 @@ namespace DungeonCrawler
                 form.Controls.Add(button.Button);
         }
 
-        private void AddHPBars(Player player, Creature enemy)
+        private void AddStatLabels(Player player, Creature enemy)
         {
-            theme.GenerateHPBars(player, enemy);
-            hpBars.UpdateBars(player, enemy);
-            form.Controls.Add(hpBars.PlayerHP.Label);
-            form.Controls.Add(hpBars.EnemyHP.Label);
+            foreach(var label in enemyStats)
+            {
+                form.Controls.Add(label.Label);
+                label.Update(enemy);
+            }
+            foreach(var label in playerStats)
+            {
+                form.Controls.Add(label.Label);
+                label.Update(player);
+            }
         }
 
         public void UpdateInterfaceOnEOT()
         {
-            hpBars.UpdateBars();
+            foreach (var label in playerStats)
+                label.Update();
+            foreach (var label in enemyStats)
+                label.Update();
+        }
+
+        public void Alert(string msg)
+        {
+            var buttons = MessageBoxButtons.OK;
+            MessageBox.Show(msg);
         }
     }
 }

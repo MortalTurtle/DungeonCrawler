@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public abstract class HPLabel
+    public abstract class HPLabel : IStatLabel
     {
         public abstract Point Location { get; }
+        private Creature creature { get; set; }
         public HPLabel()
         {
             Label = new Label()
@@ -25,7 +26,12 @@ namespace DungeonCrawler
         public Label Label { get; private set; }
         public void Update(Creature creature)
         {
-            Label.Text = creature.HP.ToString() + " \\" + '\n' + creature.HPMax;
+            this.creature = creature;
+            Update();
+        }
+        public void Update()
+        {
+            Label.Text = creature.HP + " \\" + '\n' + creature.HPMax;
         }
     }
 }

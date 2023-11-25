@@ -13,10 +13,10 @@ namespace DungeonCrawler
     {
         private readonly string name;
         public override string Name => name;
-        public override int HPMax => 100;
-        public override int Damage => 10;
+        public override int HPMax => 90;
         private IWeapon weapon;
         public override IWeapon Weapon => weapon;
+        public override int MaxFatigue => 60;
         public Player(string name)
         {
             this.weapon = new LongSword();

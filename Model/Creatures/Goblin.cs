@@ -10,12 +10,10 @@ namespace DungeonCrawler
     internal class Goblin : Creature
     {
         public override string Name => "Goblin";
-
         public override int HPMax => 50;
-
-        public override int Damage => 6;
 
         private IWeapon weapon = new OldFlail();
         public override IWeapon Weapon => weapon;
+        public override int MaxFatigue => 40;
     }
 }

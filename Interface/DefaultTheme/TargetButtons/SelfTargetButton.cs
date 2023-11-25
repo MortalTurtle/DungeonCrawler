@@ -16,6 +16,5 @@ namespace DungeonCrawler.Controls.TargetButton
             this.Button.Location = new Point(form.Width / 2 - 100, 400);
             this.Button.Text = "Self";
         }
-        
     }
 }

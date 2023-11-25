@@ -10,7 +10,8 @@ namespace DungeonCrawler
     public interface ITheme
     {
         Color MainColor { get; }
-        IHPBars HPBars { get; }
+        List<IEnemyStatLabel> EnemyStats { get; }
+        List<IPLayerStatLabel> PlayerStats { get; }
         List<IControlButton> ControlButtons { get; }
         Button MainButton { get; }
         Button GameStartButton { get; }
@@ -18,6 +19,6 @@ namespace DungeonCrawler
         TextBox MainTextBox { get; }
         void EditForm(Form form);
         void GenerateMainButtons(Form form);
-        void GenerateHPBars(Creature player, Creature enemy);
+        void GenerateStatLabels(Creature player, Creature enemy);
     }
 }

@@ -8,10 +8,11 @@ namespace DungeonCrawler.Model.Weapons
 {
     internal class LongSword : IWeapon
     {
-        public int FloorDmgRange => 6;
+        public int FloorDmgRange => 8;
 
-        public int CeilingDmgRange => 10;
+        public int CeilingDmgRange => 11;
 
         public double Precision => 75;
+        public int AttackCost => 7;
     }
 }

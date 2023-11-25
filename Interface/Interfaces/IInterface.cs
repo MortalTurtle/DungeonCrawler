@@ -11,5 +11,6 @@ namespace DungeonCrawler
         public void InitializeInterface(Form form);
         public void UpdateInterfaceOnFightStart(Player player, Creature enemy);
         public void UpdateInterfaceOnEOT();
+        public void Alert(string msg);
     }
 }

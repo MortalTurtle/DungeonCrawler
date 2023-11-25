@@ -11,6 +11,7 @@ namespace DungeonCrawler.Model.Weapons
         int FloorDmgRange { get; }
         int CeilingDmgRange { get; }
         double Precision { get; }
+        int AttackCost { get; }
         void Attack(Creature other)
         {
             var randomChance = Game.Rng.NextDouble() * 100;

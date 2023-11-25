@@ -12,5 +12,7 @@ namespace DungeonCrawler.Controls
         string ButtonText { get; }
         Button Button { get; }
         Action<Creature, Creature> Action { get; }
+        string FailMessage { get; }
+        bool IsAbleToPerformAction();
     }
 }
