@@ -17,6 +17,7 @@ namespace DungeonCrawler
         private IWeapon weapon;
         public override IWeapon Weapon => weapon;
         public override int MaxFatigue => 60;
+        public override Stats Stats => Stats.PlayerDefault;
         public Player(string name)
         {
             this.weapon = new LongSword();

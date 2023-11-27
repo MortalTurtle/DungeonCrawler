@@ -10,9 +10,9 @@ namespace DungeonCrawler.Model.Weapons
     {
         public int FloorDmgRange => 8;
 
-        public int CeilingDmgRange => 11;
+        public int CeilingDmgRange => 10;
 
-        public double Precision => 75;
+        public double Precision => 70;
         public int AttackCost => 7;
     }
 }

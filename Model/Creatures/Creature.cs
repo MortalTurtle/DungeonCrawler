@@ -3,6 +3,7 @@ using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace DungeonCrawler
     {
         public abstract string Name { get; }
         public abstract IWeapon Weapon { get; }
+        public abstract Stats Stats { get; }
         private int hp;
         private int fatigue;
         public int Fatigue
@@ -41,8 +43,23 @@ namespace DungeonCrawler
         public void Attack(Creature other)
         {
             Fatigue += Weapon.AttackCost;
-            this.Weapon.Attack(other);
+            this.Weapon.Attack(other,Stats,1,1);
         }
+        public void StrongAttack(Creature other)
+        {
+            Fatigue += (int)(Weapon.AttackCost * 1.8);
+            this.Weapon.Attack(other, Stats, 0.7, 2);
+        }
+        public void PreciseAttack(Creature other)
+        {
+            Fatigue += (int)(Weapon.AttackCost * 1.5);
+            this.Weapon.Attack(other, Stats, 2, 1.2);
+        }
+
+        private bool CanDoAttack(double costK) => (int)(Weapon.AttackCost * costK) <= MaxFatigue - Fatigue;
+        public bool CanDoStrongAttack() => CanDoAttack(1.8);
+        public bool CanDoRegularAttack() => CanDoAttack(1);
+        public bool CanDoPreciseAttack() => CanDoAttack(1.5);
 
         public Creature()
         {
@@ -51,7 +68,7 @@ namespace DungeonCrawler
 
         public void Rest()
         {
-            Fatigue -= 4;
+            Fatigue -= (4 + Stats.Endurance);
         }
 
         public void UpdateOnEOT()

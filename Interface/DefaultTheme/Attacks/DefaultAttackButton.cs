@@ -14,10 +14,6 @@ namespace DungeonCrawler.Controls.AttackButtons
         public override string ButtonText => "Regular Attack";
         public override string FailMessage => "Too tired, need rest";
         public DefaultAttackButton(Form form) : base(form) { }
-        public override bool IsAbleToPerformAction()
-        {
-            var player = Game.CurrentGame.CurrentFight.Player;
-            return player.Weapon.AttackCost <= player.MaxFatigue - player.Fatigue;
-        }
+        public override bool IsAbleToPerformAction() => Game.CurrentGame.CurrentFight.Player.CanDoRegularAttack();
     }
 }
