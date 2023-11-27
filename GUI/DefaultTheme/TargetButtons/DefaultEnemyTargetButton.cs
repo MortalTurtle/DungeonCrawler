@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace DungeonCrawler.Controls.TargetButton
 {
     [Default]
-    public class EnemyTargetButton : TargetButton
+    public class DefaultEnemyTargetButton : TargetButton
     {
         public override ActionTarget Target => ActionTarget.Enemy;
 
-        public EnemyTargetButton(Form form) : base(form) 
+        public DefaultEnemyTargetButton(Form form) : base(form) 
         {
             this.Button.Location = new Point(form.Width / 2, 400);
             this.Button.Text = "Enemy";

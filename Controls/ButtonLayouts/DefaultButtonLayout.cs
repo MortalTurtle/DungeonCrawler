@@ -12,7 +12,6 @@ namespace DungeonCrawler.Controls.AttackButtons
     public class DefaultButtonLayout : AbstractButtonLayout
     {
         public List<IControlButton> Buttons { get; private set; }
-
         public DefaultButtonLayout(Form form) : base(form)
         { }
     }

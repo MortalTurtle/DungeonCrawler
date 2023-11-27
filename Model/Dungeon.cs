@@ -15,12 +15,10 @@ namespace DungeonCrawler
         {
             this.player = new Player(playerName);
         }
-
         public void StartFight(Creature enemy)
         {
             CurrentFight = new Fight(player, enemy);
         }
-
         public void EndTurn() => CurrentFight.EndTurn();
     }
 }

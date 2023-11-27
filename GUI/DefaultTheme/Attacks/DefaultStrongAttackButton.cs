@@ -14,6 +14,7 @@ namespace DungeonCrawler
             Button.Location = new Point(30, 410);
         }
         public override Action<Creature, Creature> Action => (player, target) => player.StrongAttack(target);
+        public override Color ColorWhenPressed => Color.LightCoral;
         public override string ButtonText => "Strong Attack";
         public override string FailMessage => "Cant do strong attack, need rest"; 
         public override bool IsAbleToPerformAction() => Game.CurrentGame.CurrentFight.Player.CanDoStrongAttack();

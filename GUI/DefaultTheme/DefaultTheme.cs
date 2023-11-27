@@ -13,7 +13,5 @@ namespace DungeonCrawler
     {
         public override void EditForm(Form form)
         { }
-        public override void EditMainButtons()
-        { }
     }
 }

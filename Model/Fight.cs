@@ -34,7 +34,7 @@ namespace DungeonCrawler.Model
             if (ActionButton != null && !ActionButton.IsAbleToPerformAction())
             {
                 Interface.Alert(ActionButton.FailMessage);
-                ChangeActionButton(null);
+                ChangeActionButton(null, Color.White, Color.White);
                 return;
             }
             PerformAction(TargetButton.Target);
@@ -42,7 +42,6 @@ namespace DungeonCrawler.Model
             Enemy.UpdateOnEOT();
             Interface.UpdateInterfaceOnEOT();
         }
-
         public void PerformAction( ActionTarget target)
         {
             if (target == ActionTarget.None || ActionButton == null)
@@ -50,22 +49,21 @@ namespace DungeonCrawler.Model
             Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
             ActionButton.Action.Invoke(Player, targetCreature);
         }
-
-        public void ChangeActionButton(IActionButton other)
+        public void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor)
         {
             var lastButton = ActionButton;
             if (lastButton == other)
             {
                 Game.CurrentGame.CurrentFight.ActionButton = null;
-                lastButton.Button.BackColor = Color.White;
+                lastButton.Button.BackColor = defaultBackColor;
                 return;
             }
             if (lastButton != null)
-                lastButton.Button.BackColor = Color.White;
+                lastButton.Button.BackColor = defaultBackColor;
             Game.CurrentGame.CurrentFight.ActionButton = other;
             if (other == null)
                 return;
-            other.Button.BackColor = Color.DimGray;
+            other.Button.BackColor = colorToChange;
         }
     }
 }

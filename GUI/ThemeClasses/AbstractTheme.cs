@@ -1,5 +1,6 @@
 ﻿using DungeonCrawler.Controls;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,15 +22,34 @@ namespace DungeonCrawler
         public TextBox MainTextBox { get; private set; }
         public abstract void EditForm(Form form);
 
-        private readonly Type[]? sameThemeAttribute;
+        private readonly Type[] sameThemeAttribute;
+        private readonly Type[] defaultThemeTypes;
         public AbstractTheme()
         {
             var thisAttribute = this.GetType().GetCustomAttribute(typeof(ThemeAttribute));
-            sameThemeAttribute = Assembly.GetExecutingAssembly().GetTypes()
-                .Where( x => x.GetCustomAttributes().Contains(thisAttribute) &&
-                !x.GetTypeInfo().IsAbstract).ToArray();
+            var defaultThemeAttribute = new List<Type>();
+            var sameThemeAttribute = new List<Type>();
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.IsAbstract)
+                    continue;
+                if (type.GetCustomAttributes().Contains(thisAttribute) && !type.BaseType.IsAbstract)
+                    sameThemeAttribute.Add(type);
+                else if (type.GetCustomAttributes().Contains(Activator.CreateInstance(typeof(DefaultAttribute))))
+                    defaultThemeAttribute.Add(type);
+            }
+            for (int i = 0; i < defaultThemeAttribute.Count;i++)
+            {
+                var defaultControlElement = defaultThemeAttribute[i];
+                if (sameThemeAttribute.Any(x => x.IsAssignableTo(defaultControlElement)))
+                {
+                    defaultThemeAttribute.RemoveAt(i);
+                    i--;
+                }
+            }
+            this.defaultThemeTypes = defaultThemeAttribute.ToArray();
+            this.sameThemeAttribute = sameThemeAttribute.ToArray();
         }
-
         public void GenerateMainButtons(Form form)
         {
             MainButton = ControlsFactory.GetMainButton(form);
@@ -44,24 +64,28 @@ namespace DungeonCrawler
             };
             GenerateControlButtonsLayout(form);
             EditForm(form);
-            EditMainButtons();
         }
         private void GenerateControlButtonsLayout(Form form)
         {
             ControlButtons = new();
             var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
-                .Select(x => Activator.CreateInstance(x, form) as IControlButton).ToArray();
+                .Select(x => Activator.CreateInstance(x, form) as IControlButton)
+                .Concat(defaultThemeTypes.Where( x => x.GetInterfaces().Contains(typeof(IControlButton)))
+                .Select(x => Activator.CreateInstance(x,form) as IControlButton))
+                .ToArray();
             ControlButtons.AddRange(instances);
         }
-        public abstract void EditMainButtons();
         public void GenerateStatLabels(Creature player, Creature enemy)
         {
             EnemyStats = new();
             PlayerStats = new();
-            var playerStatInstances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IPLayerStatLabel)))
+            var types = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel)))
+                .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel))));
+            var playerStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IPLayerStatLabel)))
             .Select(x => Activator.CreateInstance(x) as IPLayerStatLabel).ToArray();
-            var enemyStatInstances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
+            var enemyStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
             .Select(x => Activator.CreateInstance(x) as IEnemyStatLabel).ToArray();
+            foreach(var instance in enemyStatInstances)
             PlayerStats.AddRange(playerStatInstances);
             EnemyStats.AddRange(enemyStatInstances);
         }

@@ -1,4 +1,5 @@
 using DungeonCrawler.Controls;
+using DungeonCrawler.GUI.DarkTheme;
 using DungeonCrawler.Model;
 
 namespace DungeonCrawler
@@ -9,7 +10,7 @@ namespace DungeonCrawler
         {
             InitializeComponent();
             this.Size = new Size(700, 500);
-            Interface.InitializeInterface(this, new DefaultInterface<DefaultTheme>());
+            Interface.InitializeInterface(this, new DefaultInterface<DarkTheme>());
         }
     }
 }

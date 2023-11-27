@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace DungeonCrawler.Controls.TargetButton
 {
     [Default]
-    internal class SelfTargetButton : TargetButton
+    internal class DefaultSelfTargetButton : TargetButton
     {
         public override ActionTarget Target => ActionTarget.Self;
-        public SelfTargetButton(Form form) : base(form)
+        public DefaultSelfTargetButton(Form form) : base(form)
         {
             this.Button.Location = new Point(form.Width / 2 - 100, 400);
             this.Button.Text = "Self";

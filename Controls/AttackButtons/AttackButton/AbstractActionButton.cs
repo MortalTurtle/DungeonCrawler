@@ -15,15 +15,18 @@ namespace DungeonCrawler
     {
         public Button Button {get; private set;}
         public abstract Action<Creature, Creature> Action { get; }
+        public virtual Color ColorWhenPressed => Color.DimGray;
+        public virtual Color DefaultBackColor => Color.White;
         public abstract string ButtonText { get; }
         public abstract string FailMessage { get; }
         public AbstractActionButton(Form form)
         {
             this.Button = ControlsFactory.GetAttackButton(form);
             Button.Text = ButtonText;
+            Button.BackColor = DefaultBackColor;
             Button.Click += (sender, args) =>
             {
-                Game.CurrentGame.CurrentFight.ChangeActionButton(this);
+                Game.CurrentGame.CurrentFight.ChangeActionButton(this,ColorWhenPressed, DefaultBackColor);
                 //var lastButton = Game.CurrentGame.CurrentFight.ActionButton;
                 //if (lastButton == this)
                 //{

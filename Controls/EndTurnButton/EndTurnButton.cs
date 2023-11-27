@@ -10,7 +10,6 @@ namespace DungeonCrawler
     public abstract class EndTurnButton : IEndTurnButton, IControlButton
     {
         public Button Button { get; private set; }
-
         public EndTurnButton(Form form)
         {
             this.Button = ControlsFactory.GetEndTurnButton(form);
