@@ -10,7 +10,7 @@ namespace DungeonCrawler
         {
             InitializeComponent();
             this.Size = new Size(700, 500);
-            Interface.InitializeInterface(this, new DefaultInterface<DarkTheme>());
+            Interface.InitializeInterface(this, new DefaultInterface<DefaultTheme>());
         }
     }
 }

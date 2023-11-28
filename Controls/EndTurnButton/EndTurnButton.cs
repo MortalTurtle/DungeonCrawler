@@ -12,7 +12,7 @@ namespace DungeonCrawler
         public Button Button { get; private set; }
         public EndTurnButton(Form form)
         {
-            this.Button = ControlsFactory.GetEndTurnButton(form);
+            this.Button = ReadyControls.GetEndTurnButton(form);
             this.Button.Click += (sender, args) =>
             {
                 Game.CurrentGame.EndTurn();

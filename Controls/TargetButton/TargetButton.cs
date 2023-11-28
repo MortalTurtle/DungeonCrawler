@@ -16,7 +16,7 @@ namespace DungeonCrawler.Controls.TargetButton
 
         public TargetButton(Form form)
         {
-            this.button = ControlsFactory.GetTargetButton(form);
+            this.button = ReadyControls.GetTargetButton(form);
             Button.Click += (sender, args) =>
             {
                 var lastButton = Game.CurrentGame.CurrentFight.TargetButton;

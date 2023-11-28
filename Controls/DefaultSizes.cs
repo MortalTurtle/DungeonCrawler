@@ -10,7 +10,7 @@ namespace DungeonCrawler
 {
     public static class DefaultParameters
     {
-        public static Size DefaultHpSize = new Size(60, 60);
-        public static Point PlayerHpLocation = new Point(20, 100);
+        public static Size DefaultHpSize = new(60, 60);
+        public static Point PlayerHpLocation = new(20, 100);
     }
 }

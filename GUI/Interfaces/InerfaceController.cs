@@ -14,6 +14,7 @@ namespace DungeonCrawler
     public static class Interface
     {
         private static IInterface currentInterface;
+        public static Size OriginalFormSize = new(700, 500);
         public static void InitializeInterface (Form form, IInterface ready)
         {
             currentInterface = ready;

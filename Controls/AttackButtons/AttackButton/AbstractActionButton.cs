@@ -21,7 +21,7 @@ namespace DungeonCrawler
         public abstract string FailMessage { get; }
         public AbstractActionButton(Form form)
         {
-            this.Button = ControlsFactory.GetAttackButton(form);
+            this.Button = ReadyControls.GetAttackButton(form);
             Button.Text = ButtonText;
             Button.BackColor = DefaultBackColor;
             Button.Click += (sender, args) =>

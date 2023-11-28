@@ -33,9 +33,11 @@ namespace DungeonCrawler
             {
                 if (type.IsAbstract)
                     continue;
-                if (type.GetCustomAttributes().Contains(thisAttribute) && !type.BaseType.IsAbstract)
+                if (type.GetCustomAttributes().Contains(thisAttribute)
+                    && !type.BaseType.IsAbstract
+                    && thisAttribute is not DefaultAttribute)
                     sameThemeAttribute.Add(type);
-                else if (type.GetCustomAttributes().Contains(Activator.CreateInstance(typeof(DefaultAttribute))))
+                else if (type.GetCustomAttributes().Contains(Activator.CreateInstance(typeof(DefaultAttribute))) && type.BaseType.IsAbstract)
                     defaultThemeAttribute.Add(type);
             }
             for (int i = 0; i < defaultThemeAttribute.Count;i++)
@@ -52,9 +54,9 @@ namespace DungeonCrawler
         }
         public void GenerateMainButtons(Form form)
         {
-            MainButton = ControlsFactory.GetMainButton(form);
-            MainTextBox = ControlsFactory.GetMainTextBox(form);
-            MainLabel = ControlsFactory.GetMainLabel(form);
+            MainButton = ReadyControls.GetMainButton(form);
+            MainTextBox = ReadyControls.GetMainTextBox(form);
+            MainLabel = ReadyControls.GetMainLabel(form);
             GameStartButton = new Button
             {
                 Location = new Point(60, form.ClientSize.Height / 2 + 100),
@@ -77,6 +79,8 @@ namespace DungeonCrawler
         }
         public void GenerateStatLabels(Creature player, Creature enemy)
         {
+            if (EnemyStats != null && PlayerStats != null)
+                return;
             EnemyStats = new();
             PlayerStats = new();
             var types = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel)))
