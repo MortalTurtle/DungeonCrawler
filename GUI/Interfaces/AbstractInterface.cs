@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
+using System.Reflection;
 
 namespace DungeonCrawler
 {
-    public abstract class AbstractInterface<TTheme> : IInterface
-        where TTheme : ITheme, new()
+    public abstract class AbstractInterface : IInterface
     {
         private Form form;
-        private readonly ITheme theme;
+        private ITheme theme;
         private Button mainButton => theme.MainButton;
         private Button startButton => theme.GameStartButton;
         private Label mainLabel => theme.MainLabel;
@@ -24,7 +24,55 @@ namespace DungeonCrawler
         private List<IControlButton> controlButtons => theme.ControlButtons;
         private Dictionary<Control, Rectangle> controlToOriginalSize = new();
         public AbstractInterface()
-        { theme = new TTheme(); }
+        { 
+            this.form = Interface.form;
+            form.Resize += (sender, args) =>
+            {
+                foreach (Control control in form.Controls)
+                {
+                    ResizeControl(
+                        controlToOriginalSize[control],
+                        control);
+                }
+            };
+        }
+
+        public void StartChooseInterfaceScreen()
+        {
+            var comboBox = new ComboBox()
+            {
+                Location = new Point(Interface.OriginalFormSize.Width / 2 - 150, Interface.OriginalFormSize.Height / 2 - 100),
+                Size = new Size(300, 100),
+                ItemHeight = 100,
+                Font = new Font(FontFamily.GenericSansSerif, 25),
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            var nameToInstance = new Dictionary<string, ITheme>();
+            foreach (var instance in Assembly.GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(
+                        t => t.GetInterfaces()
+                        .Contains(typeof(ITheme)) && !t.IsAbstract)
+                        .Select(x => Activator.CreateInstance(x) as ITheme)
+                    .ToArray())
+                nameToInstance.Add(instance.ToString(), instance);
+            comboBox.Items.AddRange(nameToInstance.Keys.ToArray());
+            comboBox.SelectedIndex = 0;
+            var label = ReadyControls.GetMainLabel(form);
+            label.Text = "Choose interface type";
+            var confirmButton = ReadyControls.GetMainButton(form);
+            confirmButton.Text = "ConfirmInterface";
+            confirmButton.Location = new Point(confirmButton.Location.X, confirmButton.Location.Y + 50);
+            confirmButton.Click += (sender, args) =>
+            {
+                form.Controls.Clear();
+                theme = nameToInstance[comboBox.Items[comboBox.SelectedIndex] as string];
+                InitializeInterface();
+            };
+            AddControl(label);
+            AddControl(confirmButton);
+            AddControl(comboBox);
+        }
 
         private void UpdateStartButton()
         {
@@ -49,25 +97,13 @@ namespace DungeonCrawler
             c.Size = new Size(newWidth, newHeight);
         }
 
-        public void InitializeInterface(Form form)
+        public void InitializeInterface()
         {
             form.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             theme.GenerateMainButtons(form);
-            RegisterControlButtons();
-            this.form = form;
-            form.Resize += (sender, args) =>
-            {
-                foreach (Control control in form.Controls)
-                {
-                    ResizeControl(
-                        controlToOriginalSize[control],
-                        control);
-                }
-            };
-            RegisterOriginalSize(mainButton);
-            RegisterOriginalSize(mainLabel);
-            RegisterOriginalSize(startButton);
-            RegisterOriginalSize(mainTextBox);
+            AddControl(mainLabel);
+            AddControl(mainButton);
+            AddControl(mainTextBox);
             form.Controls.Add(mainButton);
             form.Controls.Add(mainTextBox);
             form.Controls.Add(mainLabel);
@@ -76,7 +112,7 @@ namespace DungeonCrawler
                 form.Controls.Remove(mainButton);
                 UpdateStartButton();
                 form.Controls.Add(startButton);
-                form.Controls.Add(mainTextBox);
+                AddControl(startButton);
                 mainLabel.Text = "ENTER YOUR NAME";
                 mainTextBox.Size = new Size(form.ClientSize.Width - 120, 130);
                 mainTextBox.Text = "your_name_here";
@@ -92,18 +128,17 @@ namespace DungeonCrawler
             AddControlButtons();
         }
 
-        private void RegisterControlButtons()
+        private void AddControl(Control c)
         {
-            foreach (var c in controlButtons)
-                RegisterOriginalSize(c.Button);
+            RegisterOriginalSize(c);
+            ResizeControl(controlToOriginalSize[c], c);
+            form.Controls.Add(c);
         }
 
         private void AddControlButtons()
         {
             foreach (var button in controlButtons)
-            {
-                form.Controls.Add(button.Button);
-            }
+                AddControl(button.Button);
         }
 
         private void RegisterOriginalSize(Control c)
@@ -117,14 +152,12 @@ namespace DungeonCrawler
         {
             foreach(var label in enemyStats)
             {
-                RegisterOriginalSize(label.Label);
-                form.Controls.Add(label.Label);
+                AddControl(label.Label);
                 label.Update(enemy);
             }
             foreach(var label in playerStats)
             {
-                RegisterOriginalSize(label.Label);
-                form.Controls.Add(label.Label);
+                AddControl(label.Label);
                 label.Update(player);
             }
         }

@@ -22,9 +22,12 @@ namespace DungeonCrawler
         public TextBox MainTextBox { get; private set; }
         public abstract void EditForm(Form form);
 
-        private readonly Type[] sameThemeAttribute;
-        private readonly Type[] defaultThemeTypes;
+        private Type[] sameThemeAttribute;
+        private Type[] defaultThemeTypes;
         public AbstractTheme()
+        { }
+
+        private void GetAllCorrectControls()
         {
             var thisAttribute = this.GetType().GetCustomAttribute(typeof(ThemeAttribute));
             var defaultThemeAttribute = new List<Type>();
@@ -40,7 +43,7 @@ namespace DungeonCrawler
                 else if (type.GetCustomAttributes().Contains(Activator.CreateInstance(typeof(DefaultAttribute))) && type.BaseType.IsAbstract)
                     defaultThemeAttribute.Add(type);
             }
-            for (int i = 0; i < defaultThemeAttribute.Count;i++)
+            for (int i = 0; i < defaultThemeAttribute.Count; i++)
             {
                 var defaultControlElement = defaultThemeAttribute[i];
                 if (sameThemeAttribute.Any(x => x.IsAssignableTo(defaultControlElement)))
@@ -52,8 +55,10 @@ namespace DungeonCrawler
             this.defaultThemeTypes = defaultThemeAttribute.ToArray();
             this.sameThemeAttribute = sameThemeAttribute.ToArray();
         }
+
         public void GenerateMainButtons(Form form)
         {
+            GetAllCorrectControls();
             MainButton = ReadyControls.GetMainButton(form);
             MainTextBox = ReadyControls.GetMainTextBox(form);
             MainLabel = ReadyControls.GetMainLabel(form);
@@ -92,6 +97,11 @@ namespace DungeonCrawler
             foreach(var instance in enemyStatInstances)
             PlayerStats.AddRange(playerStatInstances);
             EnemyStats.AddRange(enemyStatInstances);
+        }
+
+        public override string ToString()
+        {
+            return (this.GetType().GetCustomAttribute(typeof(ThemeNameAttribute)) as ThemeNameAttribute).Name;
         }
     }
 }

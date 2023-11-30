@@ -8,7 +8,8 @@ namespace DungeonCrawler
 {
     public interface IInterface
     {
-        public void InitializeInterface(Form form);
+        void StartChooseInterfaceScreen();
+        public void InitializeInterface();
         public void UpdateInterfaceOnFightStart(Player player, Creature enemy);
         public void UpdateInterfaceOnEOT();
         public void Alert(string msg);

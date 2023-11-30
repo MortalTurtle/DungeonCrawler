@@ -13,12 +13,13 @@ namespace DungeonCrawler
 {
     public static class Interface
     {
+        public static Form form;
         private static IInterface currentInterface;
         public static Size OriginalFormSize = new(700, 500);
         public static void InitializeInterface (Form form, IInterface ready)
         {
             currentInterface = ready;
-            currentInterface.InitializeInterface(form);
+            currentInterface.StartChooseInterfaceScreen();
         }
 
         public static void UpdateInterfaceOnFightStart(Player player, Creature enemy)

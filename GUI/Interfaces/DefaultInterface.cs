@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    internal class DefaultInterface<TTheme> : AbstractInterface<TTheme>
-        where TTheme : ITheme, new()
+    internal class DefaultInterface : AbstractInterface
     {
-        public DefaultInterface() : base()
-        { }
     }
 }
