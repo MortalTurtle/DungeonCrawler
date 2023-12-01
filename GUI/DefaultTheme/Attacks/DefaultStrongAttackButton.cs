@@ -9,7 +9,7 @@ namespace DungeonCrawler
     [Default]
     public class DefaultStrongAttackButton : AbstractActionButton
     {
-        public DefaultStrongAttackButton(Form form) : base(form)
+        public DefaultStrongAttackButton()
         {
             Button.Location = new Point(30, 410);
         }

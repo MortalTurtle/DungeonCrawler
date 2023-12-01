@@ -15,5 +15,12 @@ namespace DungeonCrawler
             CurrentGame = new Dungeon(characterName);
             CurrentGame.StartFight(new Goblin());
         }
+
+        public static void EndFight(bool hasPlayerWon)
+        {
+            if (hasPlayerWon)
+                Interface.CallEndOfFightScreenPlayerWon();
+            else Interface.CallEndOfFightScreenPlayerLost();
+        }
     }
 }

@@ -9,7 +9,5 @@ namespace DungeonCrawler
     [Default]
     public class DefaultEndTurnButton : EndTurnButton
     {
-        public DefaultEndTurnButton(Form form) :  base(form)
-        { }
     }
 }

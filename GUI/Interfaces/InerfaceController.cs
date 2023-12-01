@@ -14,27 +14,38 @@ namespace DungeonCrawler
     public static class Interface
     {
         public static Form form;
-        private static IInterface currentInterface;
+        private static IInterface currenThemedInterface;
         public static Size OriginalFormSize = new(700, 500);
         public static void InitializeInterface (Form form, IInterface ready)
         {
-            currentInterface = ready;
-            currentInterface.StartChooseInterfaceScreen();
+            var screen = new ChooseInterfaceScreen(ready, form);
+            currenThemedInterface = ready;
+            currenThemedInterface.StartChooseInterfaceScreen(screen);
         }
 
         public static void UpdateInterfaceOnFightStart(Player player, Creature enemy)
         {
-            currentInterface.UpdateInterfaceOnFightStart(player,enemy);
+            currenThemedInterface.UpdateInterfaceOnFightStart(player,enemy);
         }
 
         public static void UpdateInterfaceOnEOT()
         {
-            currentInterface.UpdateInterfaceOnEOT();
+            currenThemedInterface.UpdateInterfaceOnEOT();
         }
 
         public static void Alert(string msg)
         {
-            currentInterface.Alert(msg);
+            currenThemedInterface.Alert(msg);
         }
+
+        public static void CallEndOfFightScreenPlayerLost()
+        {
+            throw new NotImplementedException();
+        }
+        public static void CallEndOfFightScreenPlayerWon()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

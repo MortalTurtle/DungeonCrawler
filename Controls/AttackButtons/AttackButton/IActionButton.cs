@@ -9,6 +9,7 @@ namespace DungeonCrawler.Controls
 {
     public interface IActionButton
     {
+        Color DefaultBackColor { get; }
         string ButtonText { get; }
         Button Button { get; }
         Action<Creature, Creature> Action { get; }

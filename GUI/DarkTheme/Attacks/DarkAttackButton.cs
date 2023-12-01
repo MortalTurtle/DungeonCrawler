@@ -12,7 +12,7 @@ namespace DungeonCrawler
     {
         public override Color DefaultBackColor => Color.Black;
         public override Color ColorWhenPressed => Color.DimGray;
-        public DarkAttackButton(Form form) : base(form)
+        public DarkAttackButton()
         {
             this.Button.ForeColor = Color.White;
         }

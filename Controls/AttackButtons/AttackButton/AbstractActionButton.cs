@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DungeonCrawler
 {
@@ -19,27 +20,25 @@ namespace DungeonCrawler
         public virtual Color DefaultBackColor => Color.White;
         public abstract string ButtonText { get; }
         public abstract string FailMessage { get; }
-        public AbstractActionButton(Form form)
+        public AbstractActionButton()
         {
-            this.Button = ReadyControls.GetAttackButton(form);
+            this.Button = GetAttackButton();
             Button.Text = ButtonText;
             Button.BackColor = DefaultBackColor;
             Button.Click += (sender, args) =>
             {
-                Game.CurrentGame.CurrentFight.ChangeActionButton(this,ColorWhenPressed, DefaultBackColor);
-                //var lastButton = Game.CurrentGame.CurrentFight.ActionButton;
-                //if (lastButton == this)
-                //{
-                //    Game.CurrentGame.CurrentFight.ActionButton = null;
-                //    Button.BackColor = Color.White;
-                //    return;
-                //}
-                //if (lastButton != null)
-                //    lastButton.Button.BackColor = Color.White;
-                //Button.BackColor = Color.DimGray;
-                //Game.CurrentGame.CurrentFight.ActionButton = this;
+                Game.CurrentGame.CurrentFight.ChangeActionButton(
+                    this,ColorWhenPressed,
+                    DefaultBackColor
+                    );
             };
         }
+
+        public virtual Button GetAttackButton()
+        {
+            return ReadyControls.GetAttackButton();
+        }
+
         public abstract bool IsAbleToPerformAction();
     }
 }

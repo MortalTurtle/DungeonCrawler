@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,22 +14,21 @@ namespace DungeonCrawler
     public abstract class AbstractTheme : ITheme
     {
         public Color MainColor { get; private set; }
-        public List<IControlButton> ControlButtons { get;private set; }
-        public List<IEnemyStatLabel> EnemyStats {get;private set; }
-        public List<IPLayerStatLabel> PlayerStats { get;private set; }
+        private readonly FightScreen fightScreen;
+        public List<IControlButton> ControlButtons => fightScreen.ControlButtons;
+        public List<IEnemyStatLabel> EnemyStats => fightScreen.EnemyStats;
+        public List<IPLayerStatLabel> PlayerStats => fightScreen.PlayerStats;
         public Button MainButton { get; private set; }
         public Button GameStartButton { get; private set; }
         public Label MainLabel { get; private set; }
         public TextBox MainTextBox { get; private set; }
         public abstract void EditForm(Form form);
 
-        private Type[] sameThemeAttribute;
-        private Type[] defaultThemeTypes;
+        private readonly Type[] sameThemeAttribute;
+        private readonly Type[] defaultThemeTypes;
         public AbstractTheme()
-        { }
-
-        private void GetAllCorrectControls()
         {
+            fightScreen = new FightScreen();
             var thisAttribute = this.GetType().GetCustomAttribute(typeof(ThemeAttribute));
             var defaultThemeAttribute = new List<Type>();
             var sameThemeAttribute = new List<Type>();
@@ -37,7 +37,6 @@ namespace DungeonCrawler
                 if (type.IsAbstract)
                     continue;
                 if (type.GetCustomAttributes().Contains(thisAttribute)
-                    && !type.BaseType.IsAbstract
                     && thisAttribute is not DefaultAttribute)
                     sameThemeAttribute.Add(type);
                 else if (type.GetCustomAttributes().Contains(Activator.CreateInstance(typeof(DefaultAttribute))) && type.BaseType.IsAbstract)
@@ -54,54 +53,30 @@ namespace DungeonCrawler
             }
             this.defaultThemeTypes = defaultThemeAttribute.ToArray();
             this.sameThemeAttribute = sameThemeAttribute.ToArray();
+            GenerateMainButtons();
         }
 
-        public void GenerateMainButtons(Form form)
+        public void GenerateMainButtons()
         {
-            GetAllCorrectControls();
-            MainButton = ReadyControls.GetMainButton(form);
-            MainTextBox = ReadyControls.GetMainTextBox(form);
-            MainLabel = ReadyControls.GetMainLabel(form);
+            MainButton = ReadyControls.GetMainButton();
+            MainTextBox = ReadyControls.GetMainTextBox();
+            MainLabel = ReadyControls.GetMainLabel();
             GameStartButton = new Button
             {
-                Location = new Point(60, form.ClientSize.Height / 2 + 100),
-                Size = new Size(form.ClientSize.Width - 120, 60),
+                Location = new Point(60, Interface.OriginalFormSize.Height / 2 + 100),
+                Size = new Size(Interface.OriginalFormSize.Width - 120, 60),
                 Text = "Confirm",
                 Font = new Font(FontFamily.GenericSansSerif, 25)
             };
-            GenerateControlButtonsLayout(form);
-            EditForm(form);
         }
-        private void GenerateControlButtonsLayout(Form form)
-        {
-            ControlButtons = new();
-            var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
-                .Select(x => Activator.CreateInstance(x, form) as IControlButton)
-                .Concat(defaultThemeTypes.Where( x => x.GetInterfaces().Contains(typeof(IControlButton)))
-                .Select(x => Activator.CreateInstance(x,form) as IControlButton))
-                .ToArray();
-            ControlButtons.AddRange(instances);
-        }
-        public void GenerateStatLabels(Creature player, Creature enemy)
-        {
-            if (EnemyStats != null && PlayerStats != null)
-                return;
-            EnemyStats = new();
-            PlayerStats = new();
-            var types = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel)))
-                .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel))));
-            var playerStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IPLayerStatLabel)))
-            .Select(x => Activator.CreateInstance(x) as IPLayerStatLabel).ToArray();
-            var enemyStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
-            .Select(x => Activator.CreateInstance(x) as IEnemyStatLabel).ToArray();
-            foreach(var instance in enemyStatInstances)
-            PlayerStats.AddRange(playerStatInstances);
-            EnemyStats.AddRange(enemyStatInstances);
-        }
-
         public override string ToString()
         {
             return (this.GetType().GetCustomAttribute(typeof(ThemeNameAttribute)) as ThemeNameAttribute).Name;
+        }
+
+        public void GenerateFightScreen(Creature player, Creature enemy)
+        {
+            fightScreen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, enemy);
         }
     }
 }

@@ -26,22 +26,44 @@ namespace DungeonCrawler.Model
         public IActionButton ActionButton { get; set; }
         public void EndTurn()
         {
-            if (Enemy.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
-            {
-                Enemy.Attack(Player);
-            }
-            else Enemy.Rest();
             if (ActionButton != null && !ActionButton.IsAbleToPerformAction())
             {
                 Interface.Alert(ActionButton.FailMessage);
                 ChangeActionButton(null, Color.White, Color.White);
                 return;
             }
-            PerformAction(TargetButton.Target);
+            if (Enemy.Stats.Initiative > Player.Stats.Initiative)
+            {
+                EnemyAction();
+                PlayerAction();
+            }
+            else
+            {
+                PlayerAction();
+                EnemyAction();
+            }
             Player.UpdateOnEOT();
             Enemy.UpdateOnEOT();
             Interface.UpdateInterfaceOnEOT();
+            if (Player.HP == 0 || Enemy.HP == 0)
+            {
+               HasEnded = true;
+               Game.EndFight(Enemy.HP == 0 && Player.HP != 0);
+            }
         }
+
+        private void EnemyAction()
+        {
+            if (Enemy.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
+                Enemy.Attack(Player);
+            else Enemy.Rest();
+        }
+
+        private void PlayerAction()
+        {
+            PerformAction(TargetButton.Target);
+        }
+
         public void PerformAction( ActionTarget target)
         {
             if (target == ActionTarget.None || ActionButton == null)
@@ -59,7 +81,7 @@ namespace DungeonCrawler.Model
                 return;
             }
             if (lastButton != null)
-                lastButton.Button.BackColor = defaultBackColor;
+                lastButton.Button.BackColor = lastButton.DefaultBackColor;
             Game.CurrentGame.CurrentFight.ActionButton = other;
             if (other == null)
                 return;

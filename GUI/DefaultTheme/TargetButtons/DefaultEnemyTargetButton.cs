@@ -12,9 +12,9 @@ namespace DungeonCrawler.Controls.TargetButton
     {
         public override ActionTarget Target => ActionTarget.Enemy;
 
-        public DefaultEnemyTargetButton(Form form) : base(form) 
+        public DefaultEnemyTargetButton() 
         {
-            this.Button.Location = new Point(form.Width / 2, 400);
+            this.Button.Location = new Point(350, 400);
             this.Button.Text = "Enemy";
         }
     }

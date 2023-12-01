@@ -19,12 +19,9 @@ namespace DungeonCrawler
         private Button startButton => theme.GameStartButton;
         private Label mainLabel => theme.MainLabel;
         private TextBox mainTextBox => theme.MainTextBox;
-        private List<IEnemyStatLabel> enemyStats => theme.EnemyStats;
-        private List<IPLayerStatLabel> playerStats => theme.PlayerStats; 
-        private List<IControlButton> controlButtons => theme.ControlButtons;
         private Dictionary<Control, Rectangle> controlToOriginalSize = new();
         public AbstractInterface()
-        { 
+        {
             this.form = Interface.form;
             form.Resize += (sender, args) =>
             {
@@ -37,41 +34,68 @@ namespace DungeonCrawler
             };
         }
 
-        public void StartChooseInterfaceScreen()
+        public void StartChooseInterfaceScreen(ChooseInterfaceScreen screen)
         {
-            var comboBox = new ComboBox()
-            {
-                Location = new Point(Interface.OriginalFormSize.Width / 2 - 150, Interface.OriginalFormSize.Height / 2 - 100),
-                Size = new Size(300, 100),
-                ItemHeight = 100,
-                Font = new Font(FontFamily.GenericSansSerif, 25),
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            var nameToInstance = new Dictionary<string, ITheme>();
-            foreach (var instance in Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(
-                        t => t.GetInterfaces()
-                        .Contains(typeof(ITheme)) && !t.IsAbstract)
-                        .Select(x => Activator.CreateInstance(x) as ITheme)
-                    .ToArray())
-                nameToInstance.Add(instance.ToString(), instance);
-            comboBox.Items.AddRange(nameToInstance.Keys.ToArray());
-            comboBox.SelectedIndex = 0;
-            var label = ReadyControls.GetMainLabel(form);
-            label.Text = "Choose interface type";
-            var confirmButton = ReadyControls.GetMainButton(form);
-            confirmButton.Text = "ConfirmInterface";
-            confirmButton.Location = new Point(confirmButton.Location.X, confirmButton.Location.Y + 50);
-            confirmButton.Click += (sender, args) =>
+            screen.ConfirmButton.Click += (sender, args) =>
             {
                 form.Controls.Clear();
-                theme = nameToInstance[comboBox.Items[comboBox.SelectedIndex] as string];
+                theme = screen.ChosenTheme;
                 InitializeInterface();
             };
-            AddControl(label);
-            AddControl(confirmButton);
-            AddControl(comboBox);
+            foreach (var c in screen.Controls)
+                AddControl(c);
+        }
+        public void InitializeInterface()
+        {
+            form.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            theme.GenerateMainButtons();
+            theme.EditForm(form);
+            AddControl(mainLabel);
+            AddControl(mainButton);
+            AddControl(mainTextBox);
+            form.Controls.Add(mainButton);
+            form.Controls.Add(mainTextBox);
+            form.Controls.Add(mainLabel);
+            mainButton.Click += (sender, args) =>
+            {
+                form.Controls.Remove(mainButton);
+                UpdateStartButton();
+                form.Controls.Add(startButton);
+                AddControl(startButton);
+                mainLabel.Text = "ENTER YOUR NAME";
+                mainTextBox.Size = new Size(form.ClientSize.Width - 120, 130);
+                mainTextBox.Text = "your_name_here";
+            };
+        }
+
+        public void UpdateInterfaceOnFightStart(Player player, Creature enemy)
+        {
+            form.Controls.Clear();
+            form.Controls.Add(mainLabel);
+            theme.GenerateFightScreen(player, enemy);
+            AddStatLabels(player, enemy);
+            AddControlButtons();
+        }
+
+        public void UpdateInterfaceOnEOT()
+        {
+            foreach (var label in theme.PlayerStats)
+                label.Update();
+            foreach (var label in theme.EnemyStats)
+                label.Update();
+        }
+
+        public void Alert(string msg)
+        {
+            var buttons = MessageBoxButtons.OK;
+            MessageBox.Show(msg);
+        }
+
+        private void AddControl(Control c)
+        {
+            RegisterOriginalSize(c);
+            ResizeControl(controlToOriginalSize[c], c);
+            form.Controls.Add(c);
         }
 
         private void UpdateStartButton()
@@ -97,47 +121,9 @@ namespace DungeonCrawler
             c.Size = new Size(newWidth, newHeight);
         }
 
-        public void InitializeInterface()
-        {
-            form.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            theme.GenerateMainButtons(form);
-            AddControl(mainLabel);
-            AddControl(mainButton);
-            AddControl(mainTextBox);
-            form.Controls.Add(mainButton);
-            form.Controls.Add(mainTextBox);
-            form.Controls.Add(mainLabel);
-            mainButton.Click += (sender, args) =>
-            {
-                form.Controls.Remove(mainButton);
-                UpdateStartButton();
-                form.Controls.Add(startButton);
-                AddControl(startButton);
-                mainLabel.Text = "ENTER YOUR NAME";
-                mainTextBox.Size = new Size(form.ClientSize.Width - 120, 130);
-                mainTextBox.Text = "your_name_here";
-            };
-        }
-
-        public void UpdateInterfaceOnFightStart(Player player, Creature enemy)
-        {
-            form.Controls.Clear();
-            form.Controls.Add(mainLabel);
-            theme.GenerateStatLabels(player, enemy);
-            AddStatLabels(player, enemy);
-            AddControlButtons();
-        }
-
-        private void AddControl(Control c)
-        {
-            RegisterOriginalSize(c);
-            ResizeControl(controlToOriginalSize[c], c);
-            form.Controls.Add(c);
-        }
-
         private void AddControlButtons()
         {
-            foreach (var button in controlButtons)
+            foreach (var button in theme.ControlButtons)
                 AddControl(button.Button);
         }
 
@@ -150,30 +136,16 @@ namespace DungeonCrawler
 
         private void AddStatLabels(Player player, Creature enemy)
         {
-            foreach(var label in enemyStats)
+            foreach(var label in theme.EnemyStats)
             {
                 AddControl(label.Label);
                 label.Update(enemy);
             }
-            foreach(var label in playerStats)
+            foreach(var label in theme.PlayerStats)
             {
                 AddControl(label.Label);
                 label.Update(player);
             }
-        }
-
-        public void UpdateInterfaceOnEOT()
-        {
-            foreach (var label in playerStats)
-                label.Update();
-            foreach (var label in enemyStats)
-                label.Update();
-        }
-
-        public void Alert(string msg)
-        {
-            var buttons = MessageBoxButtons.OK;
-            MessageBox.Show(msg);
         }
     }
 }

@@ -10,13 +10,18 @@ namespace DungeonCrawler
     public abstract class EndTurnButton : IEndTurnButton, IControlButton
     {
         public Button Button { get; private set; }
-        public EndTurnButton(Form form)
+        public EndTurnButton()
         {
-            this.Button = ReadyControls.GetEndTurnButton(form);
+            this.Button = GetEndTurnButton();
             this.Button.Click += (sender, args) =>
             {
                 Game.CurrentGame.EndTurn();
             };
+        }
+
+        public virtual Button GetEndTurnButton()
+        {
+            return ReadyControls.GetEndTurnButton();
         }
     }
 }

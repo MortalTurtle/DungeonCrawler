@@ -9,9 +9,9 @@ namespace DungeonCrawler
     [Default]
     public class RestButton : AbstractActionButton
     {
-        public RestButton(Form form) : base(form)
+        public RestButton()
         {
-            this.Button.Location = new Point(130, form.ClientSize.Height - 25);
+            this.Button.Location = new Point(135, 435);
         }
         public override Action<Creature, Creature> Action => (player, enemy) => { player.Rest(); };
 

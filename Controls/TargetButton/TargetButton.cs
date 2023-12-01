@@ -14,9 +14,9 @@ namespace DungeonCrawler.Controls.TargetButton
         public Button Button => button;
         public abstract ActionTarget Target { get; }
 
-        public TargetButton(Form form)
+        public TargetButton()
         {
-            this.button = ReadyControls.GetTargetButton(form);
+            this.button = GetTargetButton();
             Button.Click += (sender, args) =>
             {
                 var lastButton = Game.CurrentGame.CurrentFight.TargetButton;
@@ -31,6 +31,11 @@ namespace DungeonCrawler.Controls.TargetButton
                 Button.BackColor = Color.DimGray;
                 Game.CurrentGame.CurrentFight.TargetButton = this;
             };
+        }
+
+        public virtual Button GetTargetButton()
+        {
+            return ReadyControls.GetTargetButton();
         }
     }
 }

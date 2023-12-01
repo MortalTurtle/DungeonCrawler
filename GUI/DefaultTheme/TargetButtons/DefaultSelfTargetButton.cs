@@ -11,9 +11,9 @@ namespace DungeonCrawler.Controls.TargetButton
     internal class DefaultSelfTargetButton : TargetButton
     {
         public override ActionTarget Target => ActionTarget.Self;
-        public DefaultSelfTargetButton(Form form) : base(form)
+        public DefaultSelfTargetButton()
         {
-            this.Button.Location = new Point(form.Width / 2 - 100, 400);
+            this.Button.Location = new Point(250, 400);
             this.Button.Text = "Self";
         }
     }

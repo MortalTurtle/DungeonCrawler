@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace DungeonCrawler
         Label MainLabel { get; }
         TextBox MainTextBox { get; }
         void EditForm(Form form);
-        void GenerateMainButtons(Form form);
-        void GenerateStatLabels(Creature player, Creature enemy);
+        void GenerateMainButtons();
+        void GenerateFightScreen(Creature player, Creature enemy);
     }
 }

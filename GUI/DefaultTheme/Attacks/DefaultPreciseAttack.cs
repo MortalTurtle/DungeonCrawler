@@ -9,7 +9,7 @@ namespace DungeonCrawler
     [Default]
     public class DefaultPreciseAttack : AbstractActionButton
     {
-        public DefaultPreciseAttack(Form form) : base(form)
+        public DefaultPreciseAttack()
         {
             Button.Location = new Point(135, 410);
         }
