@@ -1,5 +1,6 @@
 ﻿using DungeonCrawler.Controls;
 using DungeonCrawler.Controls.AttackButtons;
+using DungeonCrawler.GUI.Screens;
 using DungeonCrawler.Model;
 using System;
 using System.Collections.Generic;
@@ -23,25 +24,17 @@ namespace DungeonCrawler
             currenThemedInterface.StartChooseInterfaceScreen(screen);
         }
 
-        public static void UpdateInterfaceOnFightStart(Player player, Creature enemy)
-        {
-            currenThemedInterface.UpdateInterfaceOnFightStart(player,enemy);
-        }
+        public static void ReinitializeInterface() => currenThemedInterface.InitializeInterface();
 
-        public static void UpdateInterfaceOnEOT()
-        {
-            currenThemedInterface.UpdateInterfaceOnEOT();
-        }
+        public static void UpdateInterfaceOnFightStart(Player player, Creature enemy) =>
+            currenThemedInterface.UpdateInterfaceOnFightStart(player, enemy);
 
-        public static void Alert(string msg)
-        {
-            currenThemedInterface.Alert(msg);
-        }
+        public static void UpdateInterfaceOnEOT() => currenThemedInterface.CurrentScreen.Update();
 
-        public static void CallEndOfFightScreenPlayerLost()
-        {
-            throw new NotImplementedException();
-        }
+        public static void Alert(string msg) => currenThemedInterface.Alert(msg);
+
+        public static void CallEndOfFightScreenPlayerLost() => currenThemedInterface.LoadNewScreen(typeof(IBattleLostScreen));
+
         public static void CallEndOfFightScreenPlayerWon()
         {
             throw new NotImplementedException();

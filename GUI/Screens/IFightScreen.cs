@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IFightScreen
+    public interface IFightScreen : IScreen
     {
-        List<IControlButton> ControlButtons { get; }
-        List<IEnemyStatLabel> EnemyStats { get; }
-        List<IPLayerStatLabel> PlayerStats { get; }
+        List<IPLayerStatLabel> PlayerStatLabels { get; }
+        List<IEnemyStatLabel> EnemyStatLabels { get; }
         void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy);
     }
 }

@@ -38,6 +38,7 @@ namespace DungeonCrawler
                 else hp = value;
             }
         }
+
         public abstract int HPMax { get; }
         public abstract int MaxFatigue { get; }
         public void Attack(Creature other)

@@ -1,4 +1,6 @@
 ﻿using DungeonCrawler.Controls;
+using DungeonCrawler.GUI.Screens;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +13,14 @@ namespace DungeonCrawler
     public interface ITheme
     {
         Color MainColor { get; }
-        List<IEnemyStatLabel> EnemyStats { get; }
-        List<IPLayerStatLabel> PlayerStats { get; }
-        List<IControlButton> ControlButtons { get; }
         Button MainButton { get; }
         Button GameStartButton { get; }
+        IBattleLostScreen BattleLostScreen { get; }
         Label MainLabel { get; }
         TextBox MainTextBox { get; }
         void EditForm(Form form);
         void GenerateMainButtons();
+        IScreen GetScreen(Type screenType);
         void GenerateFightScreen(Creature player, Creature enemy);
     }
 }

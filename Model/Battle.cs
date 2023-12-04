@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler.Model
 {
-    public class Fight
+    public class Battle
     {
         public Player Player { get; set; }
         public Creature Enemy { get; set; }
         public bool HasEnded { get; private set; }
-        public Fight(Player player, Creature enemy)
+        public Battle(Player player, Creature enemy)
         {
             this.Player = player;
             this.Enemy = enemy;

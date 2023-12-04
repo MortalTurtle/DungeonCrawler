@@ -8,18 +8,22 @@ using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using System.Reflection;
+using DungeonCrawler.GUI.Screens;
 
 namespace DungeonCrawler
 {
     public abstract class AbstractInterface : IInterface
     {
-        private Form form;
+        private readonly Form form;
+
         private ITheme theme;
+        public IScreen CurrentScreen { get; private set; }
         private Button mainButton => theme.MainButton;
         private Button startButton => theme.GameStartButton;
         private Label mainLabel => theme.MainLabel;
         private TextBox mainTextBox => theme.MainTextBox;
-        private Dictionary<Control, Rectangle> controlToOriginalSize = new();
+
+        private readonly Dictionary<Control, Rectangle> controlToOriginalSize = new();
         public AbstractInterface()
         {
             this.form = Interface.form;
@@ -39,7 +43,7 @@ namespace DungeonCrawler
             screen.ConfirmButton.Click += (sender, args) =>
             {
                 form.Controls.Clear();
-                theme = screen.ChosenTheme;
+                theme = Activator.CreateInstance(screen.ChosenTheme) as ITheme;
                 InitializeInterface();
             };
             foreach (var c in screen.Controls)
@@ -47,6 +51,7 @@ namespace DungeonCrawler
         }
         public void InitializeInterface()
         {
+            form.Controls.Clear();
             form.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             theme.GenerateMainButtons();
             theme.EditForm(form);
@@ -73,16 +78,15 @@ namespace DungeonCrawler
             form.Controls.Clear();
             form.Controls.Add(mainLabel);
             theme.GenerateFightScreen(player, enemy);
-            AddStatLabels(player, enemy);
-            AddControlButtons();
+            LoadNewScreen(typeof(IFightScreen));
         }
 
-        public void UpdateInterfaceOnEOT()
+        public void LoadNewScreen(Type screenType)
         {
-            foreach (var label in theme.PlayerStats)
-                label.Update();
-            foreach (var label in theme.EnemyStats)
-                label.Update();
+            form.Controls.Clear();
+            CurrentScreen = theme.GetScreen(screenType);
+            foreach (var control in CurrentScreen.Controls)
+                AddControl(control);
         }
 
         public void Alert(string msg)
@@ -121,31 +125,11 @@ namespace DungeonCrawler
             c.Size = new Size(newWidth, newHeight);
         }
 
-        private void AddControlButtons()
-        {
-            foreach (var button in theme.ControlButtons)
-                AddControl(button.Button);
-        }
-
         private void RegisterOriginalSize(Control c)
         {
             if (controlToOriginalSize.ContainsKey(c))
                 return;
             controlToOriginalSize.Add(c, new Rectangle(c.Location.X, c.Location.Y, c.Size.Width, c.Size.Height));
-        }
-
-        private void AddStatLabels(Player player, Creature enemy)
-        {
-            foreach(var label in theme.EnemyStats)
-            {
-                AddControl(label.Label);
-                label.Update(enemy);
-            }
-            foreach(var label in theme.PlayerStats)
-            {
-                AddControl(label.Label);
-                label.Update(player);
-            }
         }
     }
 }

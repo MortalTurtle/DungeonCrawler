@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DungeonCrawler
 {
     [Default]
-    [ThemeName("Default Theme")]
+    [ThemeName("Default")]
     public class DefaultTheme : AbstractTheme
     {
         public override void EditForm(Form form)

@@ -1,4 +1,6 @@
 ﻿using DungeonCrawler.Controls;
+using DungeonCrawler.GUI.Screens;
+using Ninject;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -13,11 +15,9 @@ namespace DungeonCrawler
 {
     public abstract class AbstractTheme : ITheme
     {
+        private StandardKernel screensContainer;
         public Color MainColor { get; private set; }
-        private readonly FightScreen fightScreen;
-        public List<IControlButton> ControlButtons => fightScreen.ControlButtons;
-        public List<IEnemyStatLabel> EnemyStats => fightScreen.EnemyStats;
-        public List<IPLayerStatLabel> PlayerStats => fightScreen.PlayerStats;
+        public IBattleLostScreen BattleLostScreen { get; private set; }
         public Button MainButton { get; private set; }
         public Button GameStartButton { get; private set; }
         public Label MainLabel { get; private set; }
@@ -28,7 +28,6 @@ namespace DungeonCrawler
         private readonly Type[] defaultThemeTypes;
         public AbstractTheme()
         {
-            fightScreen = new FightScreen();
             var thisAttribute = this.GetType().GetCustomAttribute(typeof(ThemeAttribute));
             var defaultThemeAttribute = new List<Type>();
             var sameThemeAttribute = new List<Type>();
@@ -36,6 +35,8 @@ namespace DungeonCrawler
             {
                 if (type.IsAbstract)
                     continue;
+                if (type.GetInterfaces().Contains(typeof(IBattleLostScreen)))
+                    this.BattleLostScreen = Activator.CreateInstance(type) as IBattleLostScreen;
                 if (type.GetCustomAttributes().Contains(thisAttribute)
                     && thisAttribute is not DefaultAttribute)
                     sameThemeAttribute.Add(type);
@@ -53,6 +54,7 @@ namespace DungeonCrawler
             }
             this.defaultThemeTypes = defaultThemeAttribute.ToArray();
             this.sameThemeAttribute = sameThemeAttribute.ToArray();
+            FindScreenTypes();
             GenerateMainButtons();
         }
 
@@ -76,7 +78,23 @@ namespace DungeonCrawler
 
         public void GenerateFightScreen(Creature player, Creature enemy)
         {
-            fightScreen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, enemy);
+            var screen = screensContainer.Get(typeof(IFightScreen)) as IFightScreen;
+            screen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, enemy);
+        }
+
+        public IScreen GetScreen(Type screenType)
+        {
+            return screensContainer.Get(screenType) as IScreen;
+        }
+
+        private void FindScreenTypes()
+        {
+            screensContainer = new();
+            foreach (var type in sameThemeAttribute.Concat(defaultThemeTypes))
+                if (type.GetInterfaces().Contains(typeof(IScreen)))
+                    screensContainer.Bind(
+                        type.GetInterfaces().First(x => x.IsAssignableTo(typeof(IScreen)) && (x is not IScreen))
+                        ).ToConstant(Activator.CreateInstance(type) as IScreen);
         }
     }
 }

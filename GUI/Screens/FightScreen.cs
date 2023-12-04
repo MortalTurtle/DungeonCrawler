@@ -6,42 +6,37 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class FightScreen : IFightScreen
+    public abstract class FightScreen : IFightScreen
     {
-        public List<IControlButton> ControlButtons { get; private set; }
+        public List<Control> Controls { get; private set; }
 
-        public List<IEnemyStatLabel> EnemyStats { get; private set; }
-
-        public List<IPLayerStatLabel> PlayerStats { get; private set; }
+        public List<IPLayerStatLabel> PlayerStatLabels { get; private set; }
+        public List<IEnemyStatLabel> EnemyStatLabels { get; private set; }
 
         public FightScreen()
         { }
 
         public void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy)
         {
-            if (ControlButtons == null)
-                GenerateControlButtonsLayout(sameThemeAttribute, defaultThemeTypes);
-            if (EnemyStats == null && PlayerStats == null)
-                GenerateStatLabels(sameThemeAttribute, defaultThemeTypes, player, enemy);
+            Controls = new();
+            PlayerStatLabels = new();
+            EnemyStatLabels = new();
+            GenerateControlButtonsLayout(sameThemeAttribute, defaultThemeTypes);
+            GenerateStatLabels(sameThemeAttribute, defaultThemeTypes, player, enemy);
         }
 
         private void GenerateControlButtonsLayout(Type[] sameThemeAttribute, Type[] defaultThemeTypes)
         {
-            ControlButtons = new();
             var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
                 .Select(x => Activator.CreateInstance(x) as IControlButton)
                 .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
                 .Select(x => Activator.CreateInstance(x) as IControlButton))
                 .ToArray();
-            ControlButtons.AddRange(instances);
+            Controls.AddRange(instances.Select(x => x.Button));
         }
 
         public void GenerateStatLabels(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy)
         {
-            if (EnemyStats != null && PlayerStats != null)
-                return;
-            EnemyStats = new();
-            PlayerStats = new();
             var types = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel)))
                 .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel))));
             var playerStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IPLayerStatLabel)))
@@ -49,8 +44,25 @@ namespace DungeonCrawler
             var enemyStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
             .Select(x => Activator.CreateInstance(x) as IEnemyStatLabel).ToArray();
             foreach (var instance in enemyStatInstances)
-                PlayerStats.AddRange(playerStatInstances);
-            EnemyStats.AddRange(enemyStatInstances);
+            {
+                instance.Update(enemy);
+                Controls.Add(instance.Label);
+            }
+            foreach (var instance in playerStatInstances)
+            {
+                instance.Update(player);
+                Controls.Add(instance.Label);
+            }
+            PlayerStatLabels.AddRange(playerStatInstances);
+            EnemyStatLabels.AddRange(enemyStatInstances);
+        }
+
+        public void Update()
+        {
+            foreach (var label in PlayerStatLabels)
+                label.Update();
+            foreach (var enemy in EnemyStatLabels)
+                enemy.Update();
         }
     }
 }

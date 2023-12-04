@@ -1,4 +1,5 @@
-﻿using DungeonCrawler.Model.Weapons;
+﻿using DungeonCrawler.Model.Creatures;
+using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    internal class Goblin : Creature
+    internal class Goblin : Creature, IFirstStageEnemy
     {
         public override string Name => "Goblin";
         public override int HPMax => 50;

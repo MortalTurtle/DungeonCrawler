@@ -10,14 +10,17 @@ namespace DungeonCrawler
     public class Dungeon
     {
         private Player player { get; set; }
-        public Fight CurrentFight { get;private set; }
+        public Battle CurrentFight { get;private set; }
+        private readonly List<Creature> enemies = new List<Creature>();
+        private int currentEnemyPointer = 0;
         public Dungeon(string playerName) 
         {
             this.player = new Player(playerName);
+            enemies.Add(new Goblin());
         }
-        public void StartFight(Creature enemy)
+        public void StartBattle()
         {
-            CurrentFight = new Fight(player, enemy);
+            CurrentFight = new Battle(player,enemies[currentEnemyPointer++]);
         }
         public void EndTurn() => CurrentFight.EndTurn();
     }

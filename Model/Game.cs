@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,12 @@ namespace DungeonCrawler
         public static void StartGame(string characterName)
         {
             CurrentGame = new Dungeon(characterName);
-            CurrentGame.StartFight(new Goblin());
+            StartBattle();
+        }
+
+        public static void StartBattle()
+        {
+            CurrentGame.StartBattle();
         }
 
         public static void EndFight(bool hasPlayerWon)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DungeonCrawler.GUI.DarkTheme
 {
     [DarkTheme]
-    [ThemeName("Dark Theme")]
+    [ThemeName("Dark")]
     public class DarkTheme : AbstractTheme
     {
         public override void EditForm(Form form)

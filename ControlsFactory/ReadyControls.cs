@@ -9,7 +9,6 @@ namespace DungeonCrawler
 {
     public static class ReadyControls
     {
-        private static Button endTurnButton; 
         public static Button GetMainButton()
         {
             return new Button
@@ -41,16 +40,13 @@ namespace DungeonCrawler
         }
         public static Button GetEndTurnButton()
         {
-            if (endTurnButton != null)
-                return endTurnButton;
-            else endTurnButton = new Button()
+            return new Button()
             {
                 Location = new Point((int)(Interface.OriginalFormSize.Width * 0.42), (int)(Interface.OriginalFormSize.Height * 0.85)),
                 Size = new Size(100,25), // 100 25
                 Text = "End Turn",
                 Font = new Font(FontFamily.GenericSansSerif, 11)
             };
-            return endTurnButton;
         }
         public static Button GetAttackButton()
         {

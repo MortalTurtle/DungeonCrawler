@@ -12,7 +12,7 @@ namespace DungeonCrawler
     {
         public readonly List<Control> Controls = new List<Control>();
         public readonly Button ConfirmButton;
-        public ITheme ChosenTheme;
+        public Type ChosenTheme;
         public ChooseInterfaceScreen(IInterface ready, Form form) 
         {
             var comboBox = new ComboBox()
@@ -26,28 +26,27 @@ namespace DungeonCrawler
                 Font = new Font(FontFamily.GenericSansSerif, 25),
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
-            var nameToInstance = new Dictionary<string, ITheme>();
-            foreach (var instance in Assembly.GetExecutingAssembly()
+            var nameToType = new Dictionary<string,  Type>();
+            foreach (var type in Assembly.GetExecutingAssembly()
                     .GetTypes()
                     .Where(
                         t => t.GetInterfaces()
                         .Contains(typeof(ITheme)) && !t.IsAbstract)
-                        .Select(x => Activator.CreateInstance(x) as ITheme)
-                    .ToArray())
-                nameToInstance.Add(instance.ToString(), instance);
-            comboBox.Items.AddRange(nameToInstance.Keys.ToArray());
+                        .ToArray())
+                nameToType.Add(type.GetCustomAttribute(typeof(ThemeNameAttribute)).ToString(), type);
+            comboBox.Items.AddRange(nameToType.Keys.ToArray());
             comboBox.SelectedIndex = 0;
             var label = ReadyControls.GetMainLabel();
-            label.Text = "Choose interface type";
+            label.Text = "Choose theme";
             var confirmButton = ReadyControls.GetMainButton();
-            confirmButton.Text = "ConfirmInterface";
+            confirmButton.Text = "Confirm";
             Controls.Add(label);
             Controls.Add(confirmButton);
             Controls.Add(comboBox);
             ConfirmButton = confirmButton;
             confirmButton.Location = new Point(confirmButton.Location.X, confirmButton.Location.Y + 50); confirmButton.Click += (sender, args) =>
             {
-                ChosenTheme = nameToInstance[comboBox.Items[comboBox.SelectedIndex] as string];
+                ChosenTheme = nameToType[comboBox.Items[comboBox.SelectedIndex] as string];
             };
         }
     }
