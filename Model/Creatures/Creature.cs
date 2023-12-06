@@ -57,11 +57,6 @@ namespace DungeonCrawler
             this.Weapon.Attack(other, Stats, 2, 1.2);
         }
 
-        private bool CanDoAttack(double costK) => (int)(Weapon.AttackCost * costK) <= MaxFatigue - Fatigue;
-        public bool CanDoStrongAttack() => CanDoAttack(1.8);
-        public bool CanDoRegularAttack() => CanDoAttack(1);
-        public bool CanDoPreciseAttack() => CanDoAttack(1.5);
-
         public Creature()
         {
             hp = HPMax;
@@ -73,8 +68,7 @@ namespace DungeonCrawler
         }
 
         public void UpdateOnEOT()
-        {
-        }
+        { }
 
         public void ReceiveHit(int damage)
         {

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace DungeonCrawler
 {
-    public abstract class AbstractActionButton : IActionButton, IControlButton
+    public abstract class AbstractActionButton : IActionButton, IBattleControlButton
     {
         public Button Button {get; private set;}
         public abstract Action<Creature, Creature> Action { get; }
@@ -20,6 +20,7 @@ namespace DungeonCrawler
         public virtual Color DefaultBackColor => Color.White;
         public abstract string ButtonText { get; }
         public abstract string FailMessage { get; }
+        public abstract int ActionCost { get; }
         public AbstractActionButton()
         {
             this.Button = GetAttackButton();
@@ -27,7 +28,11 @@ namespace DungeonCrawler
             Button.BackColor = DefaultBackColor;
             Button.Click += (sender, args) =>
             {
-                Game.CurrentGame.CurrentFight.ChangeActionButton(
+                var fight = Game.CurrentGame.CurrentFight;
+                fight.ActionCost = ActionCost;
+                fight.ChosenAction = Action;
+                fight.ActionFailMessage = FailMessage;
+                Interface.ChangeActionButton(
                     this,ColorWhenPressed,
                     DefaultBackColor
                     );
@@ -38,7 +43,5 @@ namespace DungeonCrawler
         {
             return ReadyControls.GetAttackButton();
         }
-
-        public abstract bool IsAbleToPerformAction();
     }
 }

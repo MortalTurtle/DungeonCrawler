@@ -14,7 +14,7 @@ namespace DungeonCrawler
 {
     public static class Interface
     {
-        public static Form form;
+        public static Form Form;
         private static IInterface currenThemedInterface;
         public static Size OriginalFormSize = new(700, 500);
         public static void InitializeInterface (Form form, IInterface ready)
@@ -29,16 +29,16 @@ namespace DungeonCrawler
         public static void UpdateInterfaceOnFightStart(Player player, Creature enemy) =>
             currenThemedInterface.UpdateInterfaceOnFightStart(player, enemy);
 
+        public static void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor) => 
+            (currenThemedInterface.CurrentScreen as IFightScreen).ChangeActionButton(other, colorToChange, defaultBackColor);
+
         public static void UpdateInterfaceOnEOT() => currenThemedInterface.CurrentScreen.Update();
 
         public static void Alert(string msg) => currenThemedInterface.Alert(msg);
 
         public static void CallEndOfFightScreenPlayerLost() => currenThemedInterface.LoadNewScreen(typeof(IBattleLostScreen));
 
-        public static void CallEndOfFightScreenPlayerWon()
-        {
-            throw new NotImplementedException();
-        }
+        public static void CallEndOfFightScreenPlayerWon() => currenThemedInterface.LoadNewScreen<IBattleWonScreen>();
 
     }
 }

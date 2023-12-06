@@ -11,7 +11,7 @@ namespace DungeonCrawler
             InitializeComponent();
             this.Size = new Size(700, 500);
             this.Text = "DungeonCrawler";
-            Interface.form = this;
+            Interface.Form = this;
             Interface.InitializeInterface(this, new DefaultInterface());
         }
     }

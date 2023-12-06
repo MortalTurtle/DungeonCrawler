@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IButtonLayout
+    [Default]
+    public class DefaultBattleWonScreen : BattleWonScreen
     {
-        List<IBattleControlButton> Buttons { get; }
     }
 }

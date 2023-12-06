@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DungeonCrawler.Model
 {
@@ -21,15 +22,18 @@ namespace DungeonCrawler.Model
             TargetButton = DefaultTargetButton.Instance;
             Interface.UpdateInterfaceOnFightStart(player, enemy);
             HasEnded = false;
+            ActionCost = 0;
         }
         public ITargetButton TargetButton { get; set; }
-        public IActionButton ActionButton { get; set; }
+        public int ActionCost { get; set; }
+        public string ActionFailMessage { get; set; }
+        public Action<Creature, Creature> ChosenAction { get; set; }
         public void EndTurn()
         {
-            if (ActionButton != null && !ActionButton.IsAbleToPerformAction())
+            if (Player.MaxFatigue - Player.Fatigue < ActionCost)
             {
-                Interface.Alert(ActionButton.FailMessage);
-                ChangeActionButton(null, Color.White, Color.White);
+                Interface.Alert(ActionFailMessage);
+                Interface.ChangeActionButton(null, Color.White, Color.White);
                 return;
             }
             if (Enemy.Stats.Initiative > Player.Stats.Initiative)
@@ -66,26 +70,10 @@ namespace DungeonCrawler.Model
 
         public void PerformAction( ActionTarget target)
         {
-            if (target == ActionTarget.None || ActionButton == null)
+            if (target == ActionTarget.None)
                 return;
             Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
-            ActionButton.Action.Invoke(Player, targetCreature);
-        }
-        public void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor)
-        {
-            var lastButton = ActionButton;
-            if (lastButton == other)
-            {
-                Game.CurrentGame.CurrentFight.ActionButton = null;
-                lastButton.Button.BackColor = defaultBackColor;
-                return;
-            }
-            if (lastButton != null)
-                lastButton.Button.BackColor = lastButton.DefaultBackColor;
-            Game.CurrentGame.CurrentFight.ActionButton = other;
-            if (other == null)
-                return;
-            other.Button.BackColor = colorToChange;
+            ChosenAction(Player, targetCreature);
         }
     }
 }

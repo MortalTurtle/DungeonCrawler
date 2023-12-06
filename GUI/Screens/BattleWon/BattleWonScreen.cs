@@ -4,32 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.GUI.Screens
+namespace DungeonCrawler
 {
-    public abstract class BattleLostScreen : IBattleLostScreen, IScreen
+    public abstract class BattleWonScreen : IBattleWonScreen
     {
         public List<Control> Controls { get; private set; }
-        public BattleLostScreen()
+
+        public BattleWonScreen()
         {
             Controls = new();
-            var button = GetNewGameButton();
+            var button = GetNextBattleButton();
             button.Click += (sender, args) =>
             {
-                Interface.ReinitializeInterface();
+                Game.StartBattle();
             };
             Controls.Add(button);
         }
 
-        public virtual Button GetNewGameButton()
+        public void Update() { }
+
+        public virtual Button GetNextBattleButton()
         {
             var button = ReadyControls.GetMainButton();
-            button.Text = "Start new game";
+            button.Text = "Continue expedition";
             return button;
-        }
-
-        public void Update()
-        {
-            throw new NotImplementedException();
         }
     }
 }

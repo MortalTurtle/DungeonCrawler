@@ -26,7 +26,7 @@ namespace DungeonCrawler
         private readonly Dictionary<Control, Rectangle> controlToOriginalSize = new();
         public AbstractInterface()
         {
-            this.form = Interface.form;
+            this.form = Interface.Form;
             form.Resize += (sender, args) =>
             {
                 foreach (Control control in form.Controls)
@@ -85,6 +85,14 @@ namespace DungeonCrawler
         {
             form.Controls.Clear();
             CurrentScreen = theme.GetScreen(screenType);
+            foreach (var control in CurrentScreen.Controls)
+                AddControl(control);
+        }
+
+        void IInterface.LoadNewScreen<TScreen>()
+        {
+            form.Controls.Clear();
+            CurrentScreen = theme.GetScreen(typeof(TScreen));
             foreach (var control in CurrentScreen.Controls)
                 AddControl(control);
         }

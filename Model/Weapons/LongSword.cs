@@ -14,5 +14,9 @@ namespace DungeonCrawler.Model.Weapons
 
         public double Precision => 70;
         public int AttackCost => 7;
+
+        public int StrongCost => (int)(AttackCost * 1.65);
+
+        public int PreciseCost => (int)(AttackCost * 1.3);
     }
 }

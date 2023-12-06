@@ -13,6 +13,8 @@ namespace DungeonCrawler
         public void InitializeInterface();
         public void UpdateInterfaceOnFightStart(Player player, Creature enemy);
         public void LoadNewScreen(Type screenType);
+        public void LoadNewScreen<TScreen>()
+            where TScreen : IScreen;
         public void Alert(string msg);
     }
 }

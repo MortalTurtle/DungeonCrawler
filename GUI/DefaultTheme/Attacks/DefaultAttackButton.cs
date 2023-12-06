@@ -15,6 +15,6 @@ namespace DungeonCrawler.Controls.AttackButtons
         public override Action<Creature, Creature> Action => (player, target) => player.Attack(target);
         public override string ButtonText => "Regular Attack";
         public override string FailMessage => "Too tired, need rest";
-        public override bool IsAbleToPerformAction() => Game.CurrentGame.CurrentFight.Player.CanDoRegularAttack();
+        public override int ActionCost => Game.CurrentGame.Player.Weapon.AttackCost;
     }
 }

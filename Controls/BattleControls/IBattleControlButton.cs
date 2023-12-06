@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IControlButton
+    public interface IBattleControlButton
     {
         Button Button { get; }
     }

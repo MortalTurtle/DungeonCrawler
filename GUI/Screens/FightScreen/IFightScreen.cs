@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace DungeonCrawler
         List<IPLayerStatLabel> PlayerStatLabels { get; }
         List<IEnemyStatLabel> EnemyStatLabels { get; }
         void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy);
+        void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor);
     }
 }

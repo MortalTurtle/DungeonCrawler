@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,11 @@ namespace DungeonCrawler
     public abstract class FightScreen : IFightScreen
     {
         public List<Control> Controls { get; private set; }
-
+        
         public List<IPLayerStatLabel> PlayerStatLabels { get; private set; }
         public List<IEnemyStatLabel> EnemyStatLabels { get; private set; }
-
+        private IActionButton currentActionButton { get; set; }
+        internal abstract Label ChosenActionCost { get; }
         public FightScreen()
         { }
 
@@ -27,12 +29,34 @@ namespace DungeonCrawler
 
         private void GenerateControlButtonsLayout(Type[] sameThemeAttribute, Type[] defaultThemeTypes)
         {
-            var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
-                .Select(x => Activator.CreateInstance(x) as IControlButton)
-                .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IControlButton)))
-                .Select(x => Activator.CreateInstance(x) as IControlButton))
+            var instances = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IBattleControlButton)))
+                .Select(x => Activator.CreateInstance(x) as IBattleControlButton)
+                .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IBattleControlButton)))
+                .Select(x => Activator.CreateInstance(x) as IBattleControlButton))
                 .ToArray();
+            Controls.Add(ChosenActionCost);
             Controls.AddRange(instances.Select(x => x.Button));
+        }
+
+        public void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor)
+        {
+            var lastButton = currentActionButton;
+            if (lastButton == other)
+            {
+                currentActionButton = null;
+                ChosenActionCost.Text = "";
+                lastButton.Button.BackColor = defaultBackColor;
+                return;
+            }
+            if (lastButton != null)
+                lastButton.Button.BackColor = lastButton.DefaultBackColor;
+            if (other == null)
+                return; 
+            ChosenActionCost.Text = other.ActionCost < 0 ?
+                other.ActionCost.ToString() : "+" + other.ActionCost.ToString();
+            ChosenActionCost.Text += " Fatigue";
+            currentActionButton = other;
+            other.Button.BackColor = colorToChange;
         }
 
         public void GenerateStatLabels(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy)

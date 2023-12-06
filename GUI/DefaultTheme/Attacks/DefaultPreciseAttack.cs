@@ -17,6 +17,7 @@ namespace DungeonCrawler
         public override Color ColorWhenPressed => Color.LightBlue;
         public override string ButtonText => "Precise Attack";
         public override string FailMessage => "Need Rest";
-        public override bool IsAbleToPerformAction() => Game.CurrentGame.CurrentFight.Player.CanDoPreciseAttack();
+
+        public override int ActionCost => Game.CurrentGame.Player.Weapon.PreciseCost;
     }
 }

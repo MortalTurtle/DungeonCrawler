@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler.Controls.TargetButton
 {
-    public abstract class TargetButton : IControlButton, ITargetButton
+    public abstract class TargetButton : IBattleControlButton, ITargetButton
     {
         private readonly Button button;
         public Button Button => button;

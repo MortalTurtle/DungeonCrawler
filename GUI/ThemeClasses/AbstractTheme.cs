@@ -94,7 +94,7 @@ namespace DungeonCrawler
                 if (type.GetInterfaces().Contains(typeof(IScreen)))
                     screensContainer.Bind(
                         type.GetInterfaces().First(x => x.IsAssignableTo(typeof(IScreen)) && (x is not IScreen))
-                        ).ToConstant(Activator.CreateInstance(type) as IScreen);
+                        ).To(type).InSingletonScope();
         }
     }
 }

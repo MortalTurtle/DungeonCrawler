@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public abstract class EndTurnButton : IEndTurnButton, IControlButton
+    public abstract class EndTurnButton : IEndTurnButton, IBattleControlButton
     {
         public Button Button { get; private set; }
         public EndTurnButton()

@@ -12,7 +12,7 @@ namespace DungeonCrawler
 {
     public abstract class AbstractButtonLayout : IButtonLayout
     {
-        public List<IControlButton> Buttons { get; private set; }
+        public List<IBattleControlButton> Buttons { get; private set; }
 
         public AbstractButtonLayout(Form form)
         {
@@ -20,11 +20,11 @@ namespace DungeonCrawler
             Buttons = new();
             var instances = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(
-                x => x.GetInterfaces().Contains(typeof(IControlButton)) &&
+                x => x.GetInterfaces().Contains(typeof(IBattleControlButton)) &&
                 x.GetCustomAttributes().Contains(thisAttribute) &&
                 !x.GetTypeInfo().IsAbstract
                 )
-                .Select(x => Activator.CreateInstance(x, form) as IControlButton).ToArray();
+                .Select(x => Activator.CreateInstance(x, form) as IBattleControlButton).ToArray();
             Buttons.AddRange(instances);
         }
     }

@@ -12,6 +12,8 @@ namespace DungeonCrawler.Model.Weapons
         int CeilingDmgRange { get; }
         double Precision { get; }
         int AttackCost { get; }
+        int StrongCost { get; }
+        int PreciseCost { get; }
         void Attack(Creature other, Stats stats, double perceptionK, double strengthK)
         {
             var randomChance = Game.Rng.NextDouble() * 100;

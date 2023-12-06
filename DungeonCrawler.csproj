@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controls\ButtonLayouts\**" />
+    <EmbeddedResource Remove="Controls\ButtonLayouts\**" />
+    <None Remove="Controls\ButtonLayouts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.6" />
   </ItemGroup>
 
