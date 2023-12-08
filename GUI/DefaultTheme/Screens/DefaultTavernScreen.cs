@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class DefaultAttribute : ThemeAttribute
-    { }
+    [Default]
+    public class DefaultTavernScreen : TavernScreen, IScreen
+    {
+
+    }
 }

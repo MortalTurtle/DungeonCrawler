@@ -36,6 +36,8 @@ namespace DungeonCrawler
 
         public static void Alert(string msg) => currenThemedInterface.Alert(msg);
 
+        public static void LoadScreen<TScreen>()
+            where TScreen : IScreen => currenThemedInterface.LoadNewScreen<TScreen>();
         public static void CallEndOfFightScreenPlayerLost() => currenThemedInterface.LoadNewScreen(typeof(IBattleLostScreen));
 
         public static void CallEndOfFightScreenPlayerWon() => currenThemedInterface.LoadNewScreen<IBattleWonScreen>();

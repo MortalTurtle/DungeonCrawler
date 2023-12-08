@@ -19,13 +19,24 @@ namespace DungeonCrawler
                 Game.StartBattle();
             };
             Controls.Add(button);
+            button = GetTavernButton();
+            button.Click += (sender, args) => Interface.LoadScreen<ITavernScreen>();
+            Controls.Add(button);
         }
 
         public void Update() { }
 
+        public virtual Button GetTavernButton()
+        { 
+            var button = ReadyControls.GetMainButton();
+            button.Location = new Point(60, 150);
+            button.Text = "Go to tavern";
+            return button;
+        }
         public virtual Button GetNextBattleButton()
         {
             var button = ReadyControls.GetMainButton();
+            button.Location = new Point(60, 220);
             button.Text = "Continue expedition";
             return button;
         }
