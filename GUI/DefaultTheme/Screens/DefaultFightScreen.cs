@@ -14,7 +14,8 @@ namespace DungeonCrawler
             Location = new Point(100, 380),
             Size = new Size(100,19),
             ForeColor = Color.GreenYellow,
-            BackColor = Color.DimGray
+            BackColor = Color.DimGray,
+            BorderStyle = BorderStyle.Fixed3D,
         };
         internal override Label ChosenActionCost => actionCostLabel;
     }

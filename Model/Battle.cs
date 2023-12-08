@@ -21,6 +21,7 @@ namespace DungeonCrawler.Model
             this.Enemy = enemy;
             TargetButton = DefaultTargetButton.Instance;
             Interface.UpdateInterfaceOnFightStart(player, enemy);
+            Interface.ChangeActionButton(null, Color.White, Color.White);
             HasEnded = false;
             ActionCost = 0;
         }

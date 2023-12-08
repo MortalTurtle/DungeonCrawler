@@ -16,6 +16,6 @@ namespace DungeonCrawler
         public override Action<Creature, Creature> Action => (player, enemy) => player.Rest();
         public override string ButtonText => "Rest";
         public override string FailMessage => "Unable To Rest";
-        public override int ActionCost => -5;
+        public override int ActionCost => -(Game.CurrentGame.Player.Stats.Endurance + 4);
     }
 }

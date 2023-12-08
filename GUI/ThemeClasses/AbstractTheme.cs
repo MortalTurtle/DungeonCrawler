@@ -80,6 +80,7 @@ namespace DungeonCrawler
         {
             var screen = screensContainer.Get(typeof(IFightScreen)) as IFightScreen;
             screen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, enemy);
+            screen.Controls.Add(MainLabel);
         }
 
         public IScreen GetScreen(Type screenType)

@@ -16,7 +16,7 @@ namespace DungeonCrawler
         public Dungeon(string playerName) 
         {
             this.Player = new Player(playerName);
-            enemies.Add(new Goblin());
+            enemies.AddRange(FirstStageRNGGenerator.Generate());
         }
         public void StartBattle()
         {

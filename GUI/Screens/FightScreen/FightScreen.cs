@@ -41,9 +41,11 @@ namespace DungeonCrawler
         public void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor)
         {
             var lastButton = currentActionButton;
-            if (lastButton == other)
+            if (lastButton == other && currentActionButton != null)
             {
                 lastButton.Button.BackColor = defaultBackColor;
+                ChosenActionCost.Text = "";
+                currentActionButton = null;
                 return;
             }
             if (lastButton != null)
