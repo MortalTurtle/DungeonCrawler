@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Model.Weapons
+namespace DungeonCrawler
 {
     public interface IWeapon
     {
+        string Name { get; }
         int FloorDmgRange { get; }
         int CeilingDmgRange { get; }
         double Precision { get; }

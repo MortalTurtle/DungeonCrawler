@@ -9,17 +9,13 @@ namespace DungeonCrawler
     [Default]
     public class DefaultPlayerFatigueStat : AbstractStatLabel, IPLayerStatLabel
     {
-        public override Point Location =>
-            new Point(DefaultParameters.PlayerHpLocation.X,DefaultParameters.PlayerHpLocation.Y + 40);
-        public override Size Size => DefaultParameters.DefaultHpSize;
-
-        public DefaultPlayerFatigueStat() 
-        {
-            this.Label.ForeColor = Color.DarkBlue;
-        }
         public override void Update()
         {
             this.Label.Text = base.creature.Fatigue + " \\\n" + base.creature.MaxFatigue; 
         }
+
+        public override Label? GetLabel() => new ControlsFactory<Label>().WithForeColor(Color.DarkBlue)
+            .At(new Point(DefaultParameters.PlayerHpLocation.X, DefaultParameters.PlayerHpLocation.Y + 40))
+            .WithSize(DefaultParameters.DefaultHpSize).Create() as Label;
     }
 }

@@ -43,15 +43,17 @@ namespace DungeonCrawler
             var lastButton = currentActionButton;
             if (lastButton == other)
             {
-                currentActionButton = null;
-                ChosenActionCost.Text = "";
                 lastButton.Button.BackColor = defaultBackColor;
                 return;
             }
             if (lastButton != null)
                 lastButton.Button.BackColor = lastButton.DefaultBackColor;
             if (other == null)
-                return; 
+            {
+                currentActionButton = null;
+                ChosenActionCost.Text = "";
+                return;
+            }
             ChosenActionCost.Text = other.ActionCost < 0 ?
                 other.ActionCost.ToString() : "+" + other.ActionCost.ToString();
             ChosenActionCost.Text += " Fatigue";

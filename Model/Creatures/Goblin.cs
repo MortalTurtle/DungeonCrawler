@@ -1,5 +1,4 @@
 ﻿using DungeonCrawler.Model.Creatures;
-using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;

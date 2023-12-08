@@ -1,5 +1,4 @@
 ﻿using DungeonCrawler.Model.Exceptions;
-using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +19,7 @@ namespace DungeonCrawler
         public override Stats Stats => Stats.PlayerDefault;
         public Player(string name)
         {
-            this.weapon = new LongSword();
+            this.weapon = new Longsword();
             if (name.Length > 30 || name.Contains(' '))
                 throw new IncorrectPlayerNameException();
             this.name = name;

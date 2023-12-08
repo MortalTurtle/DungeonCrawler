@@ -8,18 +8,14 @@ namespace DungeonCrawler
 {
     public abstract class AbstractStatLabel : IStatLabel
     {
-        public abstract Point Location { get; }
-        public abstract Size Size { get; }
         public Label Label { get; private set; }
         internal Creature creature { get; set; }
         public AbstractStatLabel()
         {
-            Label = new Label()
-            {
-                Location = this.Location,
-                Size = this.Size
-            };
+            Label = GetLabel();
         }
+
+        public abstract Label GetLabel();
         public void Update(Creature creature)
         {
             this.creature = creature;

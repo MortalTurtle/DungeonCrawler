@@ -10,11 +10,18 @@ namespace DungeonCrawler
     [Default]
     public class DefaultEnemyNameLabel : AbstractStatLabel, IEnemyStatLabel
     {
-        public override Point Location => new Point(500, 100);
-        public override Size Size => new Size(100,30);
+        public override Label GetLabel()
+        {
+            return new Label()
+            {
+                Location = new Point(500, 100),
+                Size = new Size(100, 30),
+                ForeColor = Color.Green
+            };
+        }
+
         public override void Update()
         {
-            this.Label.ForeColor = Color.Green;
             this.Label.Text = creature.Name;
         }
     }

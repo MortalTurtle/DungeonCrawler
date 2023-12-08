@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Model.Weapons
+namespace DungeonCrawler
 {
-    internal class LongSword : IWeapon
+    public class Longsword : IWeapon
     {
         public int FloorDmgRange => 8;
 
@@ -18,5 +18,7 @@ namespace DungeonCrawler.Model.Weapons
         public int StrongCost => (int)(AttackCost * 1.65);
 
         public int PreciseCost => (int)(AttackCost * 1.3);
+
+        public string Name => "Longsword";
     }
 }

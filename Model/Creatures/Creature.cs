@@ -1,5 +1,4 @@
 ﻿using DungeonCrawler.Controls;
-using DungeonCrawler.Model.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,12 +47,12 @@ namespace DungeonCrawler
         }
         public void StrongAttack(Creature other)
         {
-            Fatigue += (int)(Weapon.AttackCost * 1.8);
+            Fatigue += Weapon.StrongCost;
             this.Weapon.Attack(other, Stats, 0.7, 2);
         }
         public void PreciseAttack(Creature other)
         {
-            Fatigue += (int)(Weapon.AttackCost * 1.5);
+            Fatigue += Weapon.PreciseCost;
             this.Weapon.Attack(other, Stats, 2, 1.2);
         }
 

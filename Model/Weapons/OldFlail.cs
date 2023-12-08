@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Model.Weapons
+namespace DungeonCrawler
 {
     public class OldFlail : IWeapon
     {
@@ -14,5 +14,6 @@ namespace DungeonCrawler.Model.Weapons
         public int AttackCost => 6;
         public int StrongCost => (int)(AttackCost * 1.60);
         public int PreciseCost => (int)(AttackCost * 1.35);
+        public string Name => "Old Flail";
     }
 }
