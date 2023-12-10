@@ -73,12 +73,9 @@ namespace DungeonCrawler
             };
         }
 
-        public void UpdateInterfaceOnFightStart(Player player, Creature enemy)
+        public void GenerateFightAndTavernScreens(Player player)
         {
-            form.Controls.Clear();
-            form.Controls.Add(mainLabel);
-            theme.GenerateFightScreen(player, enemy);
-            LoadNewScreen(typeof(IFightScreen));
+            theme.GenerateFightAndTavernScreens(player);
         }
 
         public void LoadNewScreen(Type screenType)

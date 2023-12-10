@@ -18,7 +18,7 @@ namespace DungeonCrawler
         public int Fatigue
         {
             get { return fatigue; }
-            private set 
+            internal set 
             {
                 if (value > MaxFatigue)
                     fatigue = MaxFatigue;
@@ -31,7 +31,7 @@ namespace DungeonCrawler
         public int HP
         {
             get { return hp; }
-            private set
+            internal set
             {
                 if (value < 0) hp = 0;
                 else hp = value;

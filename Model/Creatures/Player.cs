@@ -24,5 +24,14 @@ namespace DungeonCrawler
                 throw new IncorrectPlayerNameException();
             this.name = name;
         }
+
+        public void TavernHeal()
+        {
+            HP = HPMax;
+        }
+        public void TavernRest()
+        {
+            Fatigue = 0;
+        }
     }
 }

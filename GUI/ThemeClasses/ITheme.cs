@@ -15,12 +15,11 @@ namespace DungeonCrawler
         Color MainColor { get; }
         Button MainButton { get; }
         Button GameStartButton { get; }
-        IBattleLostScreen BattleLostScreen { get; }
         Label MainLabel { get; }
         TextBox MainTextBox { get; }
         void EditForm(Form form);
         void GenerateMainButtons();
         IScreen GetScreen(Type screenType);
-        void GenerateFightScreen(Creature player, Creature enemy);
+        void GenerateFightAndTavernScreens(Player player);
     }
 }

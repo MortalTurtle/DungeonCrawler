@@ -72,15 +72,9 @@ namespace DungeonCrawler
             var enemyStatInstances = types.Where(x => x.GetInterfaces().Contains(typeof(IEnemyStatLabel)))
             .Select(x => Activator.CreateInstance(x) as IEnemyStatLabel).ToArray();
             foreach (var instance in enemyStatInstances)
-            {
-                instance.Update(enemy);
                 Controls.Add(instance.Label);
-            }
             foreach (var instance in playerStatInstances)
-            {
-                instance.Update(player);
                 Controls.Add(instance.Label);
-            }
             PlayerStatLabels.AddRange(playerStatInstances);
             EnemyStatLabels.AddRange(enemyStatInstances);
         }
@@ -91,6 +85,14 @@ namespace DungeonCrawler
                 label.Update();
             foreach (var enemy in EnemyStatLabels)
                 enemy.Update();
+        }
+
+        public void Update(Player player, Creature enemy)
+        {
+            foreach (var label in PlayerStatLabels)
+                label.Update(player);
+            foreach (var label in EnemyStatLabels)
+                label.Update(enemy);
         }
     }
 }

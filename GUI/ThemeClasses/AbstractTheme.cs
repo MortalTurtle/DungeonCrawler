@@ -17,7 +17,6 @@ namespace DungeonCrawler
     {
         private StandardKernel screensContainer;
         public Color MainColor { get; private set; }
-        public IBattleLostScreen BattleLostScreen { get; private set; }
         public Button MainButton { get; private set; }
         public Button GameStartButton { get; private set; }
         public Label MainLabel { get; private set; }
@@ -35,8 +34,6 @@ namespace DungeonCrawler
             {
                 if (type.IsAbstract)
                     continue;
-                if (type.GetInterfaces().Contains(typeof(IBattleLostScreen)))
-                    this.BattleLostScreen = Activator.CreateInstance(type) as IBattleLostScreen;
                 if (type.GetCustomAttributes().Contains(thisAttribute)
                     && thisAttribute is not DefaultAttribute)
                     sameThemeAttribute.Add(type);
@@ -76,11 +73,14 @@ namespace DungeonCrawler
             return (this.GetType().GetCustomAttribute(typeof(ThemeNameAttribute)) as ThemeNameAttribute).Name;
         }
 
-        public void GenerateFightScreen(Creature player, Creature enemy)
+        public void GenerateFightAndTavernScreens(Player player)
         {
             var screen = screensContainer.Get(typeof(IFightScreen)) as IFightScreen;
-            screen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, enemy);
+            screen.GenerateFightScreen(sameThemeAttribute, defaultThemeTypes, player, null);
             screen.Controls.Add(MainLabel);
+            var tavern = screensContainer.Get<ITavernScreen>() as ITavernScreen;
+            tavern.GenerateTavernScreen(sameThemeAttribute, defaultThemeTypes, player);
+            tavern.Controls.Add(MainLabel);
         }
 
         public IScreen GetScreen(Type screenType)

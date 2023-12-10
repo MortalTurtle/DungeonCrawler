@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.GUI.Screens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -14,7 +15,8 @@ namespace DungeonCrawler
         public static void StartGame(string characterName)
         {
             CurrentGame = new Dungeon(characterName);
-            StartBattle();
+            Interface.GenerateTavernAndFightScreen(CurrentGame.Player);
+            Interface.LoadScreen<IBattleWonScreen>();
         }
 
         public static void StartBattle()
@@ -25,8 +27,8 @@ namespace DungeonCrawler
         public static void EndFight(bool hasPlayerWon)
         {
             if (hasPlayerWon)
-                Interface.CallEndOfFightScreenPlayerWon();
-            else Interface.CallEndOfFightScreenPlayerLost();
+                Interface.LoadScreen<IBattleWonScreen>();
+            else Interface.LoadScreen<IBattleLostScreen>();
         }
     }
 }

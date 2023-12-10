@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace DungeonCrawler
 {
     [Default]
-    public class RestButton : AbstractActionButton
+    public class TavernRestButton : AbstractActionButton
     {
-        public RestButton()
+        public TavernRestButton()
         {
             this.Button.Location = new Point(135, 435);
         }

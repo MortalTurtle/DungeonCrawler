@@ -53,6 +53,7 @@ namespace DungeonCrawler.Model
             if (Player.HP == 0 || Enemy.HP == 0)
             {
                HasEnded = true;
+               TargetButton.Button.BackColor = Color.White;
                Game.EndFight(Enemy.HP == 0 && Player.HP != 0);
             }
         }
@@ -71,7 +72,7 @@ namespace DungeonCrawler.Model
 
         public void PerformAction( ActionTarget target)
         {
-            if (target == ActionTarget.None)
+            if (target == ActionTarget.None || ChosenAction == null)
                 return;
             Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
             ChosenAction(Player, targetCreature);
