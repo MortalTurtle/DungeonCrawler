@@ -49,7 +49,7 @@ namespace DungeonCrawler.Model
             }
             Player.UpdateOnEOT();
             Enemy.UpdateOnEOT();
-            Interface.UpdateInterfaceOnEOT();
+            Interface.UpdateScreen();
             if (Player.HP == 0 || Enemy.HP == 0)
             {
                HasEnded = true;

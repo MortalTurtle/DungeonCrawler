@@ -17,6 +17,7 @@ namespace DungeonCrawler.Controls.TavernScreen
             button.Click += (sender, args) =>
             {
                 Game.CurrentGame.Player.TavernHeal();
+                Interface.UpdateScreen();
             };
         }
         public virtual Button GetHealButton()

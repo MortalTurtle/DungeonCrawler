@@ -15,7 +15,6 @@ namespace DungeonCrawler
         public static void StartGame(string characterName)
         {
             CurrentGame = new Dungeon(characterName);
-            Interface.GenerateTavernAndFightScreen(CurrentGame.Player);
             Interface.LoadScreen<IBattleWonScreen>();
         }
 

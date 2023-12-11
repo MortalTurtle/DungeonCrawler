@@ -17,6 +17,7 @@ namespace DungeonCrawler
             button.Click += (sender, args) =>
             {
                 Game.CurrentGame.Player.TavernRest();
+                Interface.UpdateScreen();
             };
         }
         public virtual Button GetButton() 

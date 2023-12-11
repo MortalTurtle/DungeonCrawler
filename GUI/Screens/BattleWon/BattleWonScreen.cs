@@ -20,7 +20,11 @@ namespace DungeonCrawler
             };
             Controls.Add(button);
             button = GetTavernButton();
-            button.Click += (sender, args) => Interface.LoadScreen<ITavernScreen>();
+            button.Click += (sender, args) =>
+            {
+                Interface.LoadScreen<ITavernScreen>();
+                Interface.UpdateScreen();
+            };
             Controls.Add(button);
         }
 

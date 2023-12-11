@@ -38,7 +38,7 @@ namespace DungeonCrawler
             (currenThemedInterface.CurrentScreen as IFightScreen).Update(player, enemy);
         }
 
-        public static void UpdateInterfaceOnEOT() => currenThemedInterface.CurrentScreen.Update();
+        public static void UpdateScreen() => currenThemedInterface.CurrentScreen.Update();
         public static void Alert(string msg) => currenThemedInterface.Alert(msg);
         public static void LoadScreen<TScreen>()
             where TScreen : IScreen => currenThemedInterface.LoadNewScreen<TScreen>();

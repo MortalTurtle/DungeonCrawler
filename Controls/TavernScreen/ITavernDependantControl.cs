@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface ITavernScreen : IScreen
+    public interface ITavernDependentControl
     {
-        void GenerateTavernScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Player player);
+        Control Control { get; }
+        void Update();
+        void Update(Player player);
     }
 }
