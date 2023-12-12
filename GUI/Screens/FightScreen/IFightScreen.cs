@@ -13,6 +13,7 @@ namespace DungeonCrawler
         List<IEnemyStatLabel> EnemyStatLabels { get; }
         void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy);
         void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor);
-        void Update(Player player, Creature enemy);
+        void LogAction(IBattleActionLogger log);
+        void UpdateOnFightStart(Player player, Creature enemy);
     }
 }

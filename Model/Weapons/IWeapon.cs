@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonCrawler.Controls.BattleLoggers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +16,18 @@ namespace DungeonCrawler
         int AttackCost { get; }
         int StrongCost { get; }
         int PreciseCost { get; }
-        void Attack(Creature other, Stats stats, double perceptionK, double strengthK)
+        void Attack(Creature other, Stats stats, double perceptionK, double strengthK, AttackLogger log)
         {
-            var randomChance = Game.Rng.NextDouble() * 100;
-            randomChance *= ((double)1 + stats.Perception * perceptionK / 10);
-            if (randomChance >= 100 - Precision)
+            var roll = Game.Rng.NextDouble() * 100;
+            log.ChanceRoll = (int)roll;
+            roll *= ((double)1 + stats.Perception * perceptionK / 10);
+            log.ChanceRollMinToSuccess = (int)(100 - Precision);
+            var dmgRoll = Game.Rng.Next(FloorDmgRange, CeilingDmgRange) + (int)(stats.Strength * strengthK);
+            if (roll >= 100 - Precision)
             {
-                var dmg = Game.Rng.Next(FloorDmgRange, CeilingDmgRange) + (int)(stats.Strength * strengthK);
-                other.ReceiveHit(dmg);
+                log.IsSuccessful = true;
+                log.DmgRoll = dmgRoll;
+                other.ReceiveHit(dmgRoll);
             }
         }
     }

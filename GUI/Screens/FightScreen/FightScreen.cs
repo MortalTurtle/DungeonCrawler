@@ -10,11 +10,11 @@ namespace DungeonCrawler
     public abstract class FightScreen : IFightScreen
     {
         public List<Control> Controls { get; private set; }
-        
         public List<IPLayerStatLabel> PlayerStatLabels { get; private set; }
         public List<IEnemyStatLabel> EnemyStatLabels { get; private set; }
         private IActionButton currentActionButton { get; set; }
         internal abstract Label ChosenActionCost { get; }
+        internal abstract ListBox battleLog { get; }
         public FightScreen()
         { }
 
@@ -35,6 +35,8 @@ namespace DungeonCrawler
                 .Select(x => Activator.CreateInstance(x) as IBattleControlButton))
                 .ToArray();
             Controls.Add(ChosenActionCost);
+            Controls.Add(battleLog);
+            battleLog.HorizontalScrollbar = true;
             Controls.AddRange(instances.Select(x => x.Button));
         }
 
@@ -79,6 +81,11 @@ namespace DungeonCrawler
             EnemyStatLabels.AddRange(enemyStatInstances);
         }
 
+        public void LogAction(IBattleActionLogger log)
+        {
+            battleLog.Items.Add(log.GetLogMessage());
+        }
+
         public void Update()
         {
             foreach (var label in PlayerStatLabels)
@@ -87,8 +94,10 @@ namespace DungeonCrawler
                 enemy.Update();
         }
 
-        public void Update(Player player, Creature enemy)
+        public void UpdateOnFightStart(Player player, Creature enemy)
         {
+            battleLog.Items.Clear();
+            battleLog.Items.Add(String.Format("The fight started with :{0}", enemy.Name));
             foreach (var label in PlayerStatLabels)
                 label.Update(player);
             foreach (var label in EnemyStatLabels)

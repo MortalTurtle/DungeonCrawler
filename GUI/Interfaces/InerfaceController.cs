@@ -35,8 +35,11 @@ namespace DungeonCrawler
         public static void UpdateInterfaceOnFightStart(Player player, Creature enemy)
         {
             currenThemedInterface.LoadNewScreen<IFightScreen>();
-            (currenThemedInterface.CurrentScreen as IFightScreen).Update(player, enemy);
+            (currenThemedInterface.CurrentScreen as IFightScreen).UpdateOnFightStart(player, enemy);
         }
+
+        public static void LogBattleAction(IBattleActionLogger log) =>
+            (currenThemedInterface.CurrentScreen as IFightScreen).LogAction(log);
 
         public static void UpdateScreen() => currenThemedInterface.CurrentScreen.Update();
         public static void Alert(string msg) => currenThemedInterface.Alert(msg);

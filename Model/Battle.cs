@@ -1,4 +1,5 @@
 ﻿using DungeonCrawler.Controls;
+using DungeonCrawler.Controls.BattleLoggers;
 using DungeonCrawler.Controls.FightActions;
 using DungeonCrawler.Controls.TargetButton;
 using System;
@@ -28,7 +29,10 @@ namespace DungeonCrawler.Model
         public ITargetButton TargetButton { get; set; }
         public int ActionCost { get; set; }
         public string ActionFailMessage { get; set; }
+        public IBattleActionLogger PlayerActionLog { get; set; }
+        public IBattleActionLogger EnemyActionLog { get; set; }
         public Action<Creature, Creature> ChosenAction { get; set; }
+        private int turn = 1;
         public void EndTurn()
         {
             if (Player.MaxFatigue - Player.Fatigue < ActionCost)
@@ -37,6 +41,7 @@ namespace DungeonCrawler.Model
                 Interface.ChangeActionButton(null, Color.White, Color.White);
                 return;
             }
+            Interface.LogBattleAction(new TurnLogger(turn));
             if (Enemy.Stats.Initiative > Player.Stats.Initiative)
             {
                 EnemyAction();
@@ -56,24 +61,34 @@ namespace DungeonCrawler.Model
                TargetButton.Button.BackColor = Color.White;
                Game.EndFight(Enemy.HP == 0 && Player.HP != 0);
             }
+            else turn++;
         }
 
         private void EnemyAction()
         {
             if (Enemy.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
                 Enemy.Attack(Player);
-            else Enemy.Rest();
+            else
+            {
+                EnemyActionLog = new RestActionLogger() { Executant = Enemy };
+                Enemy.Rest();
+            }
+            Interface.LogBattleAction(EnemyActionLog);
         }
 
         private void PlayerAction()
         {
             PerformAction(TargetButton.Target);
+            Interface.LogBattleAction(PlayerActionLog);
         }
 
-        public void PerformAction( ActionTarget target)
+        private void PerformAction(ActionTarget target)
         {
             if (target == ActionTarget.None || ChosenAction == null)
-                return;
+            {
+                PlayerActionLog = new RestActionLogger() { Executant = Player };
+                Player.Rest();
+            }
             Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
             ChosenAction(Player, targetCreature);
         }

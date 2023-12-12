@@ -9,7 +9,7 @@ namespace DungeonCrawler
     [Default]
     public class DefaultFightScreen : FightScreen
     {
-        private Label actionCostLabel = new Label() 
+        private Label actionCostLabel = new Label()
         {
             Location = new Point(100, 380),
             Size = new Size(100,19),
@@ -17,6 +17,14 @@ namespace DungeonCrawler
             BackColor = Color.DimGray,
             BorderStyle = BorderStyle.Fixed3D,
         };
+        private ListBox log = new ListBox() 
+        {
+            Location = new Point(240,100),
+            Size = new Size(160,200),
+            Font = new Font(FontFamily.GenericSansSerif,7)
+        };
         internal override Label ChosenActionCost => actionCostLabel;
+
+        internal override ListBox battleLog => log;
     }
 }
