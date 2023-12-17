@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IStatLabel
+    public class GoblinLootTable : LootTable
     {
-        Label Label { get; }
-        void Update(ICreature creature);
-        void Update();
+        public override int GoldFloor => 50;
+        public override int GoldCeil => 80;
     }
 }

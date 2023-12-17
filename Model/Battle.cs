@@ -14,9 +14,9 @@ namespace DungeonCrawler.Model
     public class Battle
     {
         public Player Player { get; set; }
-        public Creature Enemy { get; set; }
+        public ICreature Enemy { get; set; }
         public bool HasEnded { get; private set; }
-        public Battle(Player player, Creature enemy)
+        public Battle(Player player, ICreature enemy)
         {
             this.Player = player;
             this.Enemy = enemy;
@@ -31,7 +31,7 @@ namespace DungeonCrawler.Model
         public string ActionFailMessage { get; set; }
         public IBattleActionLogger PlayerActionLog { get; set; }
         public IBattleActionLogger EnemyActionLog { get; set; }
-        public Action<Creature, Creature> ChosenAction { get; set; }
+        public Action<Player, ICreature> ChosenAction { get; set; }
         private int turn = 1;
         public void EndTurn()
         {
@@ -89,7 +89,7 @@ namespace DungeonCrawler.Model
                 PlayerActionLog = new RestActionLogger() { Executant = Player };
                 Player.Rest();
             }
-            Creature targetCreature = target == ActionTarget.Self ? Player : Enemy;
+            ICreature targetCreature = target == ActionTarget.Self ? Player : Enemy;
             ChosenAction(Player, targetCreature);
         }
     }

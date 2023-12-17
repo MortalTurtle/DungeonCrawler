@@ -18,7 +18,7 @@ namespace DungeonCrawler
         public FightScreen()
         { }
 
-        public void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy)
+        public void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Player player, ICreature enemy)
         {
             Controls = new();
             PlayerStatLabels = new();
@@ -65,7 +65,7 @@ namespace DungeonCrawler
             other.Button.BackColor = colorToChange;
         }
 
-        public void GenerateStatLabels(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Creature player, Creature enemy)
+        public void GenerateStatLabels(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Player player, ICreature enemy)
         {
             var types = sameThemeAttribute.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel)))
                 .Concat(defaultThemeTypes.Where(x => x.GetInterfaces().Contains(typeof(IStatLabel))));
@@ -94,7 +94,7 @@ namespace DungeonCrawler
                 enemy.Update();
         }
 
-        public void UpdateOnFightStart(Player player, Creature enemy)
+        public void UpdateOnFightStart(Player player, ICreature enemy)
         {
             battleLog.Items.Clear();
             battleLog.Items.Add(String.Format("The fight started with :{0}", enemy.Name));

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class Skeleton : Creature, IFirstStageEnemy
+    public class Skeleton : Creature<SkeletonLootTable>, IFirstStageEnemy
     {
         public override string Name => "Skeleton";
 

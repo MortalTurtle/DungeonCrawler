@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IStatLabel
+    public interface ILootTable
     {
-        Label Label { get; }
-        void Update(ICreature creature);
-        void Update();
+        int Gold { get; }
     }
 }

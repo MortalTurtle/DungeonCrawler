@@ -1,5 +1,6 @@
 ﻿using DungeonCrawler.Controls;
 using DungeonCrawler.Controls.BattleLoggers;
+using DungeonCrawler.Model.Creatures.LootTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,14 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public abstract class Creature
+    public abstract class Creature<TLootTable> : ICreature
+        where TLootTable : ILootTable, new()
     {
         public abstract string Name { get; }
         public abstract IWeapon Weapon { get; }
         public abstract Stats Stats { get; }
+        public ILootTable LootTable => new TLootTable();
+
         private int hp;
         private int fatigue;
         public int Fatigue
@@ -41,21 +45,21 @@ namespace DungeonCrawler
 
         public abstract int HPMax { get; }
         public abstract int MaxFatigue { get; }
-        public void Attack(Creature other)
+        public void Attack(ICreature other)
         {
             var log = new AttackLogger() { Executant = this, Target = other, AttackType = "default attack" };
             Fatigue += Weapon.AttackCost;
             this.Weapon.Attack(other,Stats,1,1, log as AttackLogger);
             LogActionToFight(log);
         }
-        public void StrongAttack(Creature other)
+        public void StrongAttack(ICreature other)
         {
             var log = new AttackLogger() { Executant = this, Target = other, AttackType = "strong attack" };
             Fatigue += Weapon.StrongCost;
             this.Weapon.Attack(other, Stats, 0.7, 2,log);
             LogActionToFight(log);
         }
-        public void PreciseAttack(Creature other)
+        public void PreciseAttack(ICreature other)
         {
             var log = new AttackLogger() { Executant = this, Target = other, AttackType = "precise attack" };
             Fatigue += Weapon.PreciseCost;

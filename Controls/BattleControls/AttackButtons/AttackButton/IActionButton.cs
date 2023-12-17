@@ -11,7 +11,7 @@ namespace DungeonCrawler.Controls
     {
         Color DefaultBackColor { get; }
         Button Button { get; }
-        Action<Creature, Creature> Action { get; }
+        Action<Player, ICreature> Action { get; }
         string ButtonText { get; }
         string FailMessage { get; }
         int ActionCost { get; }

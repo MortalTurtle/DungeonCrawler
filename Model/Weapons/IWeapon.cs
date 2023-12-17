@@ -16,7 +16,7 @@ namespace DungeonCrawler
         int AttackCost { get; }
         int StrongCost { get; }
         int PreciseCost { get; }
-        void Attack(Creature other, Stats stats, double perceptionK, double strengthK, AttackLogger log)
+        void Attack(ICreature other, Stats stats, double perceptionK, double strengthK, AttackLogger log)
         {
             var roll = Game.Rng.NextDouble() * 100;
             log.ChanceRoll = (int)roll;

@@ -8,7 +8,7 @@ namespace DungeonCrawler.Controls.BattleLoggers
 {
     internal class RestActionLogger : IBattleActionLogger
     {
-        public Creature Executant { get; set; }
+        public ICreature Executant { get; set; }
         public string GetLogMessage() => String.Format("{0} are resting, rested for {1}", Executant.Name, Executant.Stats.Endurance + 4);
     }
 }

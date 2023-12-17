@@ -8,9 +8,9 @@ namespace DungeonCrawler
 {
     public static class FirstStageRNGGenerator
     {
-        public static List<Creature> Generate()
+        public static List<ICreature> Generate()
         {
-            return new List<Creature>() {new Goblin(), new GiantRat(), new Skeleton() };
+            return new List<ICreature>() {new Goblin(), new GiantRat(), new Skeleton() };
         }
     }
 }

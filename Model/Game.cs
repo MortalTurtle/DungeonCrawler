@@ -26,7 +26,12 @@ namespace DungeonCrawler
         public static void EndFight(bool hasPlayerWon)
         {
             if (hasPlayerWon)
+            {
+                var player = CurrentGame.Player;
+                var enemy = CurrentGame.CurrentFight.Enemy;
+                player.Gold += enemy.LootTable.Gold;
                 Interface.LoadScreen<IBattleWonScreen>();
+            }
             else Interface.LoadScreen<IBattleLostScreen>();
         }
     }

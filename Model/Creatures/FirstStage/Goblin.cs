@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    internal class Goblin : Creature, IFirstStageEnemy
+    public class Goblin : Creature<GoblinLootTable>, IFirstStageEnemy
     {
         public override string Name => "Goblin";
         public override int HPMax => 50;

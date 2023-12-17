@@ -8,8 +8,8 @@ namespace DungeonCrawler.Controls.BattleLoggers
 {
     public class AttackLogger : IBattleActionLogger
     {
-        public Creature Executant { get; set; }
-        public Creature Target { get; set; }
+        public ICreature Executant { get; set; }
+        public ICreature Target { get; set; }
         public int ChanceRoll { get; set; }
         public int ChanceRollMinToSuccess { get; set; }
         public int DmgRoll { get; set; }

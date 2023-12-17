@@ -11,7 +11,7 @@ namespace DungeonCrawler
     public abstract class HPLabel : IStatLabel
     {
         public abstract Point Location { get; }
-        private Creature creature { get; set; }
+        private ICreature creature { get; set; }
         public HPLabel()
         {
             Label = new Label()
@@ -24,7 +24,7 @@ namespace DungeonCrawler
             Label.Font = new Font(Label.Font, FontStyle.Bold);
         }
         public Label Label { get; private set; }
-        public void Update(Creature creature)
+        public void Update(ICreature creature)
         {
             this.creature = creature;
             Update();

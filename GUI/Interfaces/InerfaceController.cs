@@ -32,7 +32,7 @@ namespace DungeonCrawler
         public static void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor) => 
             (currenThemedInterface.CurrentScreen as IFightScreen).ChangeActionButton(other, colorToChange, defaultBackColor);
 
-        public static void UpdateInterfaceOnFightStart(Player player, Creature enemy)
+        public static void UpdateInterfaceOnFightStart(Player player, ICreature enemy)
         {
             currenThemedInterface.LoadNewScreen<IFightScreen>();
             (currenThemedInterface.CurrentScreen as IFightScreen).UpdateOnFightStart(player, enemy);

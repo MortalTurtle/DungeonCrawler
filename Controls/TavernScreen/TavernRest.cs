@@ -16,7 +16,10 @@ namespace DungeonCrawler
             button = GetButton();
             button.Click += (sender, args) =>
             {
-                Game.CurrentGame.Player.TavernRest();
+                var player = Game.CurrentGame.Player;
+                if (player.Fatigue == 0) return;
+                player.TavernRest();
+                player.Gold -= 10;
                 Interface.UpdateScreen();
             };
         }

@@ -15,7 +15,7 @@ namespace DungeonCrawler
     public abstract class AbstractActionButton : IActionButton, IBattleControlButton
     {
         public Button Button {get; private set;}
-        public abstract Action<Creature, Creature> Action { get; }
+        public abstract Action<Player, ICreature> Action { get; }
         public virtual Color ColorWhenPressed => Color.DimGray;
         public virtual Color DefaultBackColor => Color.White;
         public abstract string ButtonText { get; }

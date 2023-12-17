@@ -16,7 +16,10 @@ namespace DungeonCrawler.Controls.TavernScreen
             button = GetHealButton();
             button.Click += (sender, args) =>
             {
+                var player = Game.CurrentGame.Player;
+                if (player.HP == player.HPMax) return;
                 Game.CurrentGame.Player.TavernHeal();
+                Game.CurrentGame.Player.Gold -= 25;
                 Interface.UpdateScreen();
             };
         }

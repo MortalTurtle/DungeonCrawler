@@ -12,9 +12,9 @@ namespace DungeonCrawler
         where TEnemyHP : HPLabel, new()
     {
         public HPLabel PlayerHP { get; private set; }
-        private Creature player { get; set; }
+        private Player player { get; set; }
         public HPLabel EnemyHP { get; private set; }
-        private Creature enemy { get; set; }
+        private ICreature enemy { get; set; }
         public AbstractHPBars()
         {
             PlayerHP = new TPlayerHp();
@@ -35,7 +35,7 @@ namespace DungeonCrawler
             EnemyHP.Update(enemy);
         }
 
-        public void UpdateBars(Creature player, Creature enemy)
+        public void UpdateBars(Player player, ICreature enemy)
         {
             this.player = player;
             this.enemy = enemy;
