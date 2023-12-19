@@ -83,10 +83,10 @@ namespace DungeonCrawler
             tavern.Controls.Add(MainLabel);
         }
 
-        public IScreen GetScreen(Type screenType)
-        {
-            return screensContainer.Get(screenType) as IScreen;
-        }
+        public IScreen GetScreen(Type screenType) => screensContainer.Get(screenType) as IScreen;
+
+        public TScreen GetScreen<TScreen>()
+            where TScreen : IScreen => screensContainer.Get<TScreen>();
 
         private void FindScreenTypes()
         {

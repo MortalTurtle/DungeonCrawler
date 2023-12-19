@@ -8,6 +8,7 @@ namespace DungeonCrawler
 {
     public interface IBattleWonScreen : IScreen
     {
-
+        void UpdateLootGained(ILootTable loot);
+        void ClearLootTable();
     }
 }

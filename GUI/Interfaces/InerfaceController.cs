@@ -30,20 +30,23 @@ namespace DungeonCrawler
             currenThemedInterface.GenerateFightAndTavernScreens(player);
 
         public static void ChangeActionButton(IActionButton other, Color colorToChange, Color defaultBackColor) => 
-            (currenThemedInterface.CurrentScreen as IFightScreen).ChangeActionButton(other, colorToChange, defaultBackColor);
+            currenThemedInterface.GetScreen<IFightScreen>().ChangeActionButton(other, colorToChange, defaultBackColor);
 
         public static void UpdateInterfaceOnFightStart(Player player, ICreature enemy)
         {
             currenThemedInterface.LoadNewScreen<IFightScreen>();
-            (currenThemedInterface.CurrentScreen as IFightScreen).UpdateOnFightStart(player, enemy);
+            currenThemedInterface.GetScreen<IFightScreen>().UpdateOnFightStart(player, enemy);
         }
 
         public static void LogBattleAction(IBattleActionLogger log) =>
-            (currenThemedInterface.CurrentScreen as IFightScreen).LogAction(log);
+            currenThemedInterface.GetScreen<IFightScreen>().LogAction(log);
 
         public static void UpdateScreen() => currenThemedInterface.CurrentScreen.Update();
         public static void Alert(string msg) => currenThemedInterface.Alert(msg);
         public static void LoadScreen<TScreen>()
             where TScreen : IScreen => currenThemedInterface.LoadNewScreen<TScreen>();
+
+        public static TScreen GetScreen<TScreen>()
+            where TScreen : IScreen => currenThemedInterface.GetScreen<TScreen>();
     }
 }

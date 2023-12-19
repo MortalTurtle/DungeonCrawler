@@ -19,6 +19,8 @@ namespace DungeonCrawler
         TextBox MainTextBox { get; }
         void EditForm(Form form);
         void GenerateMainButtons();
+        TScreen GetScreen<TScreen>()
+            where TScreen : IScreen;
         IScreen GetScreen(Type screenType);
         void GenerateFightAndTavernScreens(Player player);
     }

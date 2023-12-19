@@ -88,6 +88,7 @@ namespace DungeonCrawler.Model
             {
                 PlayerActionLog = new RestActionLogger() { Executant = Player };
                 Player.Rest();
+                return;
             }
             ICreature targetCreature = target == ActionTarget.Self ? Player : Enemy;
             ChosenAction(Player, targetCreature);

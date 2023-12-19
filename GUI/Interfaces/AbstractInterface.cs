@@ -86,13 +86,10 @@ namespace DungeonCrawler
                 AddControl(control);
         }
 
-        void IInterface.LoadNewScreen<TScreen>()
-        {
-            form.Controls.Clear();
-            CurrentScreen = theme.GetScreen(typeof(TScreen));
-            foreach (var control in CurrentScreen.Controls)
-                AddControl(control);
-        }
+        void IInterface.LoadNewScreen<TScreen>() => LoadNewScreen(typeof(TScreen));
+
+        public TScreen GetScreen<TScreen>()
+            where TScreen : IScreen => theme.GetScreen<TScreen>();
 
         public void Alert(string msg)
         {

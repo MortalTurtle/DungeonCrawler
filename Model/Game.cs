@@ -30,6 +30,8 @@ namespace DungeonCrawler
                 var player = CurrentGame.Player;
                 var enemy = CurrentGame.CurrentFight.Enemy;
                 player.Gold += enemy.LootTable.Gold;
+                var screen = Interface.GetScreen<IBattleWonScreen>();
+                screen.UpdateLootGained(enemy.LootTable);
                 Interface.LoadScreen<IBattleWonScreen>();
             }
             else Interface.LoadScreen<IBattleLostScreen>();

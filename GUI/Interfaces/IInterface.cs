@@ -15,6 +15,8 @@ namespace DungeonCrawler
         public void LoadNewScreen(Type screenType);
         public void LoadNewScreen<TScreen>()
             where TScreen : IScreen;
+        TScreen GetScreen<TScreen>()
+            where TScreen : IScreen;
         public void Alert(string msg);
     }
 }
