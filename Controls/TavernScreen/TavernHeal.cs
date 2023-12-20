@@ -9,6 +9,7 @@ namespace DungeonCrawler.Controls.TavernScreen
     public abstract class TavernHeal : ITavernControl
     {
         public Control Control => button;
+        internal abstract int cost { get; }
         private Button button { get; set; }
         
         public TavernHeal()
@@ -18,9 +19,7 @@ namespace DungeonCrawler.Controls.TavernScreen
             {
                 var player = Game.CurrentGame.Player;
                 if (player.HP == player.HPMax) return;
-                Game.CurrentGame.Player.TavernHeal();
-                Game.CurrentGame.Player.Gold -= 25;
-                Interface.UpdateScreen();
+                player.TavernHeal();
             };
         }
         public virtual Button GetHealButton()

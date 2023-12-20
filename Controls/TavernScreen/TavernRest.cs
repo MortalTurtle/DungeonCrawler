@@ -19,8 +19,6 @@ namespace DungeonCrawler
                 var player = Game.CurrentGame.Player;
                 if (player.Fatigue == 0) return;
                 player.TavernRest();
-                player.Gold -= 10;
-                Interface.UpdateScreen();
             };
         }
         public virtual Button GetButton() 

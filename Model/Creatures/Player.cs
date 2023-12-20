@@ -1,4 +1,5 @@
-﻿using DungeonCrawler.Model.Creatures.LootTable;
+﻿using DungeonCrawler.Model.Creatures.Gear.Talismans;
+using DungeonCrawler.Model.Creatures.LootTable;
 using DungeonCrawler.Model.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace DungeonCrawler
         public override IWeapon Weapon => weapon;
         public override int MaxFatigue => 60;
         public override Stats Stats => Stats.PlayerDefault;
+        private IGearSet gearSet = new PlayersStartGearSet();
+        public IGearSet GearSet => gearSet;
         private int gold;
         public int Gold 
         {
@@ -41,10 +44,14 @@ namespace DungeonCrawler
         public void TavernHeal()
         {
             HP = HPMax;
+            this.gold -= 35;
+            Interface.UpdateScreen();
         }
         public void TavernRest()
         {
             Fatigue = 0;
+            this.gold -= 15;
+            Interface.UpdateScreen();
         }
     }
 }

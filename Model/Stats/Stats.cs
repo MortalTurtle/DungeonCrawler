@@ -19,5 +19,27 @@ namespace DungeonCrawler
             Perception = 1,
             Initiative = 3
         };
+
+        public static Stats operator+ (Stats a, Stats b)
+        {
+            return new()
+            {
+                Strength = a.Strength + b.Strength,
+                Endurance = a.Endurance + b.Endurance,
+                Perception = a.Perception + b.Perception,
+                Initiative = a.Initiative + b.Initiative
+            };
+        }
+
+        public static Stats operator- (Stats a, Stats b)
+        {
+            return new()
+            {
+                Strength = a.Strength - b.Strength,
+                Endurance = a.Endurance - b.Endurance,
+                Perception = a.Perception - b.Perception,
+                Initiative = a.Initiative - b.Initiative
+            };
+        }
     }
 }
