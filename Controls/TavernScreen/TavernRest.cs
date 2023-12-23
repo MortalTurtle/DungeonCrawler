@@ -20,6 +20,7 @@ namespace DungeonCrawler
                 if (player.Fatigue == 0) return;
                 player.TavernRest();
             };
+            new ToolTip().SetToolTip(button, "The cost is 25 gold");
         }
         public virtual Button GetButton() 
         {

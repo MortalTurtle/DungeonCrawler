@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonCrawler.Model.Creatures.Gear.Talismans
+namespace DungeonCrawler
 {
     public struct OldBronzeNecklace : ITalisman
     {

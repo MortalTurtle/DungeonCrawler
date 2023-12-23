@@ -8,6 +8,5 @@ namespace DungeonCrawler
 {
     public interface ITalisman : IArtefact
     {
-        string Name { get; }
     }
 }

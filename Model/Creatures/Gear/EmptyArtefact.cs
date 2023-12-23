@@ -12,5 +12,6 @@ namespace DungeonCrawler
         public readonly static IArtefact Instance = new EmptyArtefact();
         public Stats StatBoost => new Stats();
         public int Defense => 0;
+        public string Name => "No artefact";
     }
 }
