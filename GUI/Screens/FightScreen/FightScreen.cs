@@ -16,13 +16,14 @@ namespace DungeonCrawler
         internal abstract Label ChosenActionCost { get; }
         internal abstract ListBox battleLog { get; }
         public FightScreen()
-        { }
-
-        public void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Player player, ICreature enemy)
         {
             Controls = new();
             PlayerStatLabels = new();
             EnemyStatLabels = new();
+        }
+
+        public void GenerateFightScreen(Type[] sameThemeAttribute, Type[] defaultThemeTypes, Player player, ICreature enemy)
+        {
             GenerateControlButtonsLayout(sameThemeAttribute, defaultThemeTypes);
             GenerateStatLabels(sameThemeAttribute, defaultThemeTypes, player, enemy);
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +26,10 @@ namespace DungeonCrawler
             Font = new Font(FontFamily.GenericSansSerif,7)
         };
         internal override Label ChosenActionCost => actionCostLabel;
+
+        public DefaultFightScreen()
+        {
+        }
 
         internal override ListBox battleLog => log;
     }
