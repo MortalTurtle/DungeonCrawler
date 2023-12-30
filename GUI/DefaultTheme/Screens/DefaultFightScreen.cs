@@ -29,6 +29,14 @@ namespace DungeonCrawler
 
         public DefaultFightScreen()
         {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "images\\player.png");
+            var picture = new PictureBox()
+            {
+                ImageLocation = path,
+                SizeMode = PictureBoxSizeMode.AutoSize,
+                Location = new(100, 250)
+            };
+            Controls.Add(picture);
         }
 
         internal override ListBox battleLog => log;

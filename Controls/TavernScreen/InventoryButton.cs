@@ -16,6 +16,7 @@ namespace DungeonCrawler
             button.Click += (sender, args) =>
             {
                 Interface.LoadScreen<IGearScreen>();
+                Interface.UpdateScreen();
             };
         }
 
