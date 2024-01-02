@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public interface IWeapon
+    public interface IWeapon : IArtefact
     {
         string Name { get; }
         int FloorDmgRange { get; }

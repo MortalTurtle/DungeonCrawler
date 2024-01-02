@@ -15,6 +15,10 @@ namespace DungeonCrawler
         public int AttackCost { get; private set; }
         public int StrongCost { get; private set; }
         public int PreciseCost { get; private set; }
+        public Stats StatBoost => new Stats();
+        public int Defense => 0;
+        public string PicturePath => throw new NotImplementedException();
+
         public CreatureWeaponPlaceHolder(string name,
             int floorDmg,
             int ceilDmg,

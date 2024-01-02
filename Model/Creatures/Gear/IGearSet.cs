@@ -11,5 +11,7 @@ namespace DungeonCrawler
         Stats CollectiveStatBoost { get; }
         int CollectiveDefenseBoost { get; }
         ITalisman Talisman { get; set; }
+        IWeapon Weapon { get; set; }
+        List<IArtefact> Inventory { get; }
     }
 }

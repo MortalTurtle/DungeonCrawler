@@ -12,7 +12,10 @@ namespace DungeonCrawler
         public override string Name => "Skeleton";
 
         private readonly IWeapon weapon = new OldRustySword();
-        public override IWeapon Weapon => weapon;
+        public override IWeapon Weapon {
+            get => weapon;
+            set => throw new NotImplementedException();
+        }
         public override Stats Stats => new Stats()
         {
             Endurance = 3,

@@ -14,7 +14,7 @@ namespace DungeonCrawler
         where TLootTable : ILootTable, new()
     {
         public abstract string Name { get; }
-        public abstract IWeapon Weapon { get; }
+        public abstract IWeapon Weapon { get; set; }
         public abstract Stats Stats { get; }
         public ILootTable LootTable => new TLootTable();
 

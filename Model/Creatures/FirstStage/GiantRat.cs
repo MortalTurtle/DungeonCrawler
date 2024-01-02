@@ -9,7 +9,11 @@ namespace DungeonCrawler
     public class GiantRat : Creature<RatLootTable>, IFirstStageEnemy
     {
         public override string Name => "Giant rat";
-        public override IWeapon Weapon => new CreatureWeaponPlaceHolder("Claws", 4, 7, 90, 4, 7, 6);
+        public override IWeapon Weapon 
+        { 
+            get => new CreatureWeaponPlaceHolder("Claws", 4, 7, 90, 4, 7, 6);
+            set => throw new NotImplementedException(); 
+        }
 
         private readonly Stats stats = new Stats
         {

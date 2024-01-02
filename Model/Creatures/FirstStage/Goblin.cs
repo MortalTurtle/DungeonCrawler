@@ -11,7 +11,11 @@ namespace DungeonCrawler
         public override string Name => "Goblin";
         public override int HPMax => 50;
         private readonly IWeapon weapon = new OldFlail();
-        public override IWeapon Weapon => weapon;
+        public override IWeapon Weapon 
+        { 
+            get => weapon;
+            set => throw new NotImplementedException(); 
+        }
         public override int MaxFatigue => 40;
         public override Stats Stats => new() 
         {

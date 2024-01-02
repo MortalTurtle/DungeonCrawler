@@ -21,5 +21,11 @@ namespace DungeonCrawler.Model.Weapons
         public int StrongCost => (int)(7 * 1.6);
 
         public int PreciseCost => (int)(AttackCost * 1.3);
+
+        public Stats StatBoost => new Stats();
+
+        public int Defense => 0;
+
+        public string PicturePath => throw new NotImplementedException();
     }
 }

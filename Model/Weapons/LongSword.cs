@@ -20,5 +20,11 @@ namespace DungeonCrawler
         public int PreciseCost => (int)(AttackCost * 1.3);
 
         public string Name => "Longsword";
+
+        public Stats StatBoost => new Stats();
+
+        public int Defense => 0;
+
+        public string PicturePath => Program.ImagePath + "\\longSword.png";
     }
 }

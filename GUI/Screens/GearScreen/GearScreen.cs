@@ -14,12 +14,15 @@ namespace DungeonCrawler
         public List<Control> Controls { get; private set; }
         private readonly TableLayoutPanel inventoryLayoutPanel;
         private readonly PictureBoxWithArtefact talismanBox;
-        private readonly Dictionary<PictureBox, IArtefact> boxToArtefactInstance = new();
-        public GearScreen() 
+        private readonly PictureBoxWithArtefact weaponBox;
+        public GearScreen()
         {
             Controls = new();
-            talismanBox = GetTalismanBox();
-            inventoryLayoutPanel = new TableLayoutPanel() {Size = new(280,280), Location = new(400, 50) };
+            talismanBox = GetGenericBox<ITalisman>("Talisman Slot");
+            talismanBox.Location = new(100, 100);
+            weaponBox = GetGenericBox<IWeapon>("WeaponSlot");
+            weaponBox.Location = new(40, 180);
+            inventoryLayoutPanel = new TableLayoutPanel() { Size = new(280, 280), Location = new(400, 50) };
             inventoryLayoutPanel.RowStyles.Clear();
             inventoryLayoutPanel.ColumnStyles.Clear();
             for (int i = 0; i < 4; i++)
@@ -28,45 +31,61 @@ namespace DungeonCrawler
                 inventoryLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 65));
             }
 
-            for (int i = 0; i < 10;i++)
-            {
-                var pic = new PictureBoxWithArtefact(new OldBronzeNecklace()) {Size = new Size(60,60), AllowDrop = true };
-                pic.MouseDown += (sender, e) =>
-                {
-                    pic.DoDragDrop(pic, DragDropEffects.Move);
-                };
-                inventoryLayoutPanel.Controls.Add(pic,i % 4 , i / 4);
-            }
             Controls.Add(inventoryLayoutPanel);
             Controls.Add(talismanBox);
+            Controls.Add(weaponBox);
+        }
+
+        private PictureBoxWithArtefact CreatePictureBox(IArtefact artefact)
+        {
+            var pic = new PictureBoxWithArtefact(artefact) { Size = new Size(60, 60), AllowDrop = true };
+            pic.MouseDown += (sender, e) =>
+            {
+                pic.DoDragDrop(pic, DragDropEffects.Move);
+            };
+            return pic;
+        }
+
+        private void AddPictureBoxToInventoryTable(PictureBoxWithArtefact box)
+        {
+            var count = inventoryLayoutPanel.Controls.Count;
+            inventoryLayoutPanel.Controls.Add(box,count % 4, count / 4);
         }
 
         public void Update()
         {
             var playerGearSet = Game.CurrentGame.Player.GearSet;
+            inventoryLayoutPanel.Controls.Clear();
             talismanBox.Artefact = playerGearSet.Talisman;
+            weaponBox.Artefact = playerGearSet.Weapon;
+            foreach (var item in playerGearSet.Inventory)
+                AddPictureBoxToInventoryTable(CreatePictureBox(item));
         }
 
-        private PictureBoxWithArtefact GetTalismanBox()
+        private PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
+            where TArtefact : class, IArtefact
         {
-            var talismanBox = new PictureBoxWithArtefact(new EmptyArtefact()) { Size = new Size(60, 60), Location = new(100, 100), AllowDrop = true };
+            var box = new PictureBoxWithArtefact(new EmptyArtefact()) { Size = new Size(60, 60), AllowDrop = true };
             var tooltip = new ToolTip();
-            tooltip.SetToolTip(talismanBox, "Talisman slot");
-            talismanBox.DragEnter += (sender, args) =>
-            {
-                if ((sender as PictureBoxWithArtefact).Artefact is ITalisman)
-                    args.Effect = DragDropEffects.Move;
-                else
-                    args.Effect = DragDropEffects.None;
-            };
-            talismanBox.DragDrop += (sender, args) =>
+            tooltip.SetToolTip(box, toolTipMsg);
+            box.DragEnter += (sender, args) =>
             {
                 var data = args.Data.GetData(typeof(PictureBoxWithArtefact)) as PictureBoxWithArtefact;
-                inventoryLayoutPanel.Controls.Remove(data);
-                Game.CurrentGame.Player.GearSet.Talisman = data.Artefact as ITalisman;
-                talismanBox.Artefact = data.Artefact;
+                if (data.Artefact is TArtefact)
+                    args.Effect = DragDropEffects.Move;
+                else args.Effect = DragDropEffects.None;
             };
-            return talismanBox;
+            box.DragDrop += (sender, args) =>
+            {
+                var data = args.Data.GetData(typeof(PictureBoxWithArtefact)) as PictureBoxWithArtefact;
+                var artefactData = data.Artefact;
+                var type = typeof(IGearSet);
+                var artefactProperty = type.GetProperties().Where(x => x.PropertyType == typeof(TArtefact)).First();
+                data.Artefact = artefactProperty.GetValue(Game.CurrentGame.Player.GearSet) as TArtefact;
+                artefactProperty.SetValue(Game.CurrentGame.Player.GearSet, artefactData as TArtefact);
+                box.Artefact = artefactData;
+            };
+            return box;
         }
     }
 }

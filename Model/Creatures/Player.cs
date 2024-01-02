@@ -14,8 +14,14 @@ namespace DungeonCrawler
         private readonly string name;
         public override string Name => name;
         public override int HPMax => 90;
-        private IWeapon weapon;
-        public override IWeapon Weapon => weapon;
+        public override IWeapon Weapon 
+        {
+            get => GearSet.Weapon;
+            set 
+            {
+                GearSet.Weapon = value;
+            }
+        }
         public override int MaxFatigue => 60;
         public override Stats Stats => Stats.PlayerDefault;
         private IGearSet gearSet;
@@ -34,7 +40,7 @@ namespace DungeonCrawler
         public Player(string name)
         {
             gearSet = new PlayersStartGearSet(Stats);
-            this.weapon = new Longsword();
+            this.Weapon = new Longsword();
             Gold = 70;
 
             if (name.Length > 30 || name.Contains(' '))
