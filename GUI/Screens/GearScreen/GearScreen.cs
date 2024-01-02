@@ -9,14 +9,6 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    internal class DragDropArtefactData
-    {
-        public IArtefact Artefact { get; set; }
-        public DragDropArtefactData(IArtefact artefact)
-        {
-            Artefact = artefact;
-        }
-    }
     public abstract class GearScreen : IGearScreen
     {
         public List<Control> Controls { get; private set; }
@@ -41,7 +33,7 @@ namespace DungeonCrawler
                 var pic = new PictureBoxWithArtefact(new OldBronzeNecklace()) {Size = new Size(60,60), AllowDrop = true };
                 pic.MouseDown += (sender, e) =>
                 {
-                    pic.DoDragDrop(new DragDropArtefactData(pic.Artefact), DragDropEffects.Move);
+                    pic.DoDragDrop(pic, DragDropEffects.Move);
                 };
                 inventoryLayoutPanel.Controls.Add(pic,i % 4 , i / 4);
             }
@@ -69,8 +61,8 @@ namespace DungeonCrawler
             };
             talismanBox.DragDrop += (sender, args) =>
             {
-                var data = args.Data.GetData(typeof(DragDropArtefactData)) as DragDropArtefactData;
-                inventoryLayoutPanel.Controls.RemoveAt(0);
+                var data = args.Data.GetData(typeof(PictureBoxWithArtefact)) as PictureBoxWithArtefact;
+                inventoryLayoutPanel.Controls.Remove(data);
                 Game.CurrentGame.Player.GearSet.Talisman = data.Artefact as ITalisman;
                 talismanBox.Artefact = data.Artefact;
             };
