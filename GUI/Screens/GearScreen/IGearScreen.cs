@@ -8,5 +8,6 @@ namespace DungeonCrawler
 {
     public interface IGearScreen : IScreen
     {
+
     }
 }

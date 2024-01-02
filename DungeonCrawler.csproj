@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="bin\Debug\net7.0-windows\Images\" />
+    <Folder Include="GUI\Images\" />
   </ItemGroup>
 
 </Project>

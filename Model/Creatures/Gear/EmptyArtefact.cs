@@ -13,5 +13,7 @@ namespace DungeonCrawler
         public Stats StatBoost => new Stats();
         public int Defense => 0;
         public string Name => "No artefact";
+
+        public string PicturePath => Program.ImagePath + "\\empty.png" ;
     }
 }

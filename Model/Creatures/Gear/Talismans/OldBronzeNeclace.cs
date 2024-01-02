@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public struct OldBronzeNecklace : ITalisman
+    public class OldBronzeNecklace : ITalisman
     {
         public string Name => "Old bronze necklace";
         public Stats StatBoost => new Stats()
@@ -15,5 +15,7 @@ namespace DungeonCrawler
             Perception = 2
         };
         public int Defense => 2;
+
+        public string PicturePath => Program.ImagePath + "\\oldBronzeNecklace.png";
     }
 }

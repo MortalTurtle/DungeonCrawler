@@ -1,10 +1,15 @@
+using System.IO;
+using System.Reflection;
+
 namespace DungeonCrawler
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
+        private static string directory = Directory.GetCurrentDirectory();
+        public static readonly string ImagePath = Path.Combine(directory.Substring(0, directory.IndexOf("\\bin")), "GUI\\images");
         [STAThread]
         static void Main()
         {
