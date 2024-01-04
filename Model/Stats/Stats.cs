@@ -12,6 +12,7 @@ namespace DungeonCrawler
         public int Endurance { get; set; }
         public int Perception { get; set; }
         public int Initiative { get; set; }
+
         public static readonly Stats PlayerDefault = new()
         {
             Strength = 1,

@@ -42,7 +42,6 @@ namespace DungeonCrawler
             gearSet = new PlayersStartGearSet(Stats);
             this.Weapon = new Longsword();
             Gold = 70;
-
             if (name.Length > 30 || name.Contains(' '))
                 throw new IncorrectPlayerNameException();
             this.name = name;
