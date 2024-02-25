@@ -10,8 +10,7 @@ namespace DungeonCrawler
     public class EmptyArtefact : IArtefact
     {
         public readonly static IArtefact Instance = new EmptyArtefact();
-        public Stats StatBoost => new Stats();
-        public int Defense => 0;
+        public Stats StatBoost => new();
         public string Name => "No artefact";
 
         public string PicturePath => Program.ImagePath + "\\empty.png" ;

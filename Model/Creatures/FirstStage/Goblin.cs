@@ -9,16 +9,16 @@ namespace DungeonCrawler
     public class Goblin : Creature<GoblinLootTable>, IFirstStageEnemy
     {
         public override string Name => "Goblin";
-        public override int HPMax => 50;
         private readonly IWeapon weapon = new OldFlail();
         public override IWeapon Weapon 
         { 
             get => weapon;
             set => throw new NotImplementedException(); 
         }
-        public override int MaxFatigue => 40;
         public override Stats Stats => new() 
         {
+            MaxHealth = 50,
+            MaxFatigue = 40,
             Strength = 1,
             Perception = 1,
             Endurance = 1,

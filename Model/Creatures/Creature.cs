@@ -25,8 +25,11 @@ namespace DungeonCrawler
             get { return fatigue; }
             internal set 
             {
-                if (value > MaxFatigue)
-                    fatigue = MaxFatigue;
+                if (value > Stats.MaxFatigue)
+                {
+                    fatigue = Stats.MaxFatigue;
+                    return;
+                }
                 if (value < 0)
                     fatigue = 0;
                 else fatigue = value;
@@ -38,18 +41,21 @@ namespace DungeonCrawler
             get { return hp; }
             internal set
             {
+                if (value > Stats.MaxHealth)
+                {
+                    hp = Stats.MaxHealth;
+                    return;
+                }
                 if (value < 0) hp = 0;
                 else hp = value;
             }
         }
 
-        public abstract int HPMax { get; }
-        public abstract int MaxFatigue { get; }
         public void Attack(ICreature other)
         {
             var log = new AttackLogger() { Executant = this, Target = other, AttackType = "default attack" };
             Fatigue += Weapon.AttackCost;
-            this.Weapon.Attack(other,Stats,1,1, log as AttackLogger);
+            this.Weapon.Attack(other,Stats,1,1, log);
             LogActionToFight(log);
         }
         public void StrongAttack(ICreature other)
@@ -76,7 +82,7 @@ namespace DungeonCrawler
 
         public Creature()
         {
-            hp = HPMax;
+            hp = Stats.MaxHealth;
         }
 
         public void Rest()

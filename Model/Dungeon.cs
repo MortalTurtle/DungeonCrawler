@@ -11,7 +11,7 @@ namespace DungeonCrawler
     {
         public Player Player { get; private set; }
         public Battle CurrentFight { get;private set; }
-        private readonly List<ICreature> enemies = new List<ICreature>();
+        private readonly List<ICreature> enemies = new();
         private int currentEnemyPointer = 0;
         public Dungeon(string playerName) 
         {

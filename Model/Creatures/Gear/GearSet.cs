@@ -21,14 +21,13 @@ namespace DungeonCrawler
             get => weapon;
             set => CalculateStatsOnArtefactChange(ref weapon, value); 
         }
-        private Stats statsToAlter;
+        private Stats creatureStats;
+        public Stats CreatureStats => creatureStats;
         private readonly List<IArtefact> inventory = new();
         public List<IArtefact> Inventory => inventory;
-        public Stats CollectiveStatBoost => statsToAlter;
-        public int CollectiveDefenseBoost { get; private set; }
         public PlayersStartGearSet(Stats playerStats) 
         {
-            statsToAlter = playerStats;
+            creatureStats = playerStats;
             Talisman = new OldBronzeNecklace();
             for (int i = 0; i < 8; i++)
                 inventory.Add(new OldBronzeNecklace());
@@ -38,13 +37,11 @@ namespace DungeonCrawler
         private void CalculateStatsOnArtefactChange<TArtefact>(ref TArtefact from, TArtefact to)
             where TArtefact : IArtefact
         {
-            IArtefact fromAsArtefact = from as IArtefact;
+            IArtefact fromAsArtefact = from;
             if (fromAsArtefact == null)
                 fromAsArtefact = EmptyArtefact.Instance;
-            statsToAlter -= fromAsArtefact.StatBoost;
-            statsToAlter += to.StatBoost;
-            CollectiveDefenseBoost -= fromAsArtefact.Defense;
-            CollectiveDefenseBoost += to.Defense;
+            creatureStats -= fromAsArtefact.StatBoost;
+            creatureStats += to.StatBoost;
             from = to;
         }
     }

@@ -8,8 +8,7 @@ namespace DungeonCrawler
 {
     public interface IGearSet
     {
-        Stats CollectiveStatBoost { get; }
-        int CollectiveDefenseBoost { get; }
+        Stats CreatureStats { get; }
         ITalisman Talisman { get; set; }
         IWeapon Weapon { get; set; }
         List<IArtefact> Inventory { get; }

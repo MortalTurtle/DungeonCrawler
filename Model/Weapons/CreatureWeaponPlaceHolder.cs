@@ -15,8 +15,7 @@ namespace DungeonCrawler
         public int AttackCost { get; private set; }
         public int StrongCost { get; private set; }
         public int PreciseCost { get; private set; }
-        public Stats StatBoost => new Stats();
-        public int Defense => 0;
+        public Stats StatBoost => new();
         public string PicturePath => throw new NotImplementedException();
 
         public CreatureWeaponPlaceHolder(string name,
@@ -24,7 +23,7 @@ namespace DungeonCrawler
             int ceilDmg,
             double precisionPercent, 
             int atkCost,
-            int strngAtkCost,
+            int strongAtkCost,
             int preciseAtkCost)
         {
             Name = name;
@@ -32,7 +31,7 @@ namespace DungeonCrawler
             CeilingDmgRange = ceilDmg;
             Precision = precisionPercent;
             AttackCost = atkCost;
-            StrongCost = strngAtkCost;
+            StrongCost = strongAtkCost;
             PreciseCost = preciseAtkCost;
         }
     }

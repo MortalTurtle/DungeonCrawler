@@ -16,9 +16,9 @@ namespace DungeonCrawler
 
         public override void Update()
         {
-            this.Label.Text = base.creature.Fatigue + " \\\n" + base.creature.MaxFatigue;
+            this.Label.Text = base.creature.Fatigue + " \\\n" + base.creature.Stats.MaxFatigue;
         }
-        public override Label GetLabel() => new Label() 
+        public override Label GetLabel() => new() 
         {
             Location = new Point(600, 130),
             Size = DefaultParameters.DefaultHpSize,

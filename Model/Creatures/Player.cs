@@ -13,7 +13,6 @@ namespace DungeonCrawler
     {
         private readonly string name;
         public override string Name => name;
-        public override int HPMax => 90;
         public override IWeapon Weapon 
         {
             get => GearSet.Weapon;
@@ -22,9 +21,8 @@ namespace DungeonCrawler
                 GearSet.Weapon = value;
             }
         }
-        public override int MaxFatigue => 60;
         public override Stats Stats => Stats.PlayerDefault;
-        private IGearSet gearSet;
+        private readonly IGearSet gearSet;
         public IGearSet GearSet => gearSet;
         private int gold;
         public int Gold 
@@ -41,14 +39,14 @@ namespace DungeonCrawler
         {
             gearSet = new PlayersStartGearSet(Stats);
             this.Weapon = new Longsword();
-            Gold = 70;
+            Gold = 50;
             if (name.Length > 30 || name.Contains(' '))
                 throw new IncorrectPlayerNameException();
             this.name = name;
         }
         public new void ReceiveHit(int damage)
         {
-            var dmgReduction = (int)(GearSet.CollectiveDefenseBoost * 0.25);
+            var dmgReduction = (int)((double)Stats.Defense * 0.25);
             damage -= Game.Rng.Next(0,dmgReduction);
             damage = damage < 0 ? 0 : damage;
             HP -= damage;
@@ -56,7 +54,7 @@ namespace DungeonCrawler
 
         public void TavernHeal()
         {
-            HP = HPMax;
+            HP = Stats.MaxHealth;
             this.gold -= 45;
             Interface.UpdateScreen();
         }

@@ -11,9 +11,7 @@ namespace DungeonCrawler
         string Name { get; }
         IWeapon Weapon { get; }
         Stats Stats { get; }
-        int HPMax { get; }
         int HP { get; }
-        int MaxFatigue { get; }
         int Fatigue { get; }
         ILootTable LootTable { get; }
         void Attack(ICreature other);

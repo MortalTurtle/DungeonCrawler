@@ -9,13 +9,12 @@ namespace DungeonCrawler
     public class OldBronzeNecklace : ITalisman
     {
         public string Name => "Old bronze necklace";
-        public Stats StatBoost => new Stats()
+        public Stats StatBoost => new()
         {
             Strength = 1,
-            Perception = 2
+            Perception = 2,
+            Defense = 2
         };
-        public int Defense => 2;
-
         public string PicturePath => Program.ImagePath + "\\oldBronzeNecklace.png";
     }
 }

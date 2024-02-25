@@ -17,7 +17,7 @@ namespace DungeonCrawler.Controls.TavernScreen
             button.Click += (sender, args) =>
             {
                 var player = Game.CurrentGame.Player;
-                if (player.HP == player.HPMax) return;
+                if (player.HP == player.Stats.MaxHealth) return;
                 player.TavernHeal();
             };
             var tooltip = new ToolTip();

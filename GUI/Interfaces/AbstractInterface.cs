@@ -93,7 +93,7 @@ namespace DungeonCrawler
 
         public void Alert(string msg)
         {
-            var buttons = MessageBoxButtons.OK;
+            //var buttons = MessageBoxButtons.OK;
             MessageBox.Show(msg);
         }
 

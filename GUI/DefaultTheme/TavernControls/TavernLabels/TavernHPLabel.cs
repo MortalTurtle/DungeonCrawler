@@ -21,7 +21,7 @@ namespace DungeonCrawler
 
         public override void Update()
         {
-            this.Control.Text = player.HP + "/ \n" + player.HPMax;
+            this.Control.Text = player.HP + "/ \n" + player.Stats.MaxHealth;
         }
     }
 }

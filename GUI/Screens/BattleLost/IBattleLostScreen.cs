@@ -8,6 +8,5 @@ namespace DungeonCrawler.GUI.Screens
 {
     public interface IBattleLostScreen : IScreen
     {
-        List<Control> Controls { get; }
     }
 }

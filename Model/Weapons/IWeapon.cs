@@ -9,7 +9,6 @@ namespace DungeonCrawler
 {
     public interface IWeapon : IArtefact
     {
-        string Name { get; }
         int FloorDmgRange { get; }
         int CeilingDmgRange { get; }
         double Precision { get; }

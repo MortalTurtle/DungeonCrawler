@@ -57,7 +57,7 @@ namespace DungeonCrawler
             }
         }
 
-        public virtual Button GetExitButton() => new Button()
+        public virtual Button GetExitButton() => new()
         {
             Size = new(100, 40),
             Location = new(275, 390),
@@ -86,7 +86,7 @@ namespace DungeonCrawler
             return table;
         }
 
-        private PictureBoxWithArtefact CreatePictureBox(IArtefact artefact)
+        private static PictureBoxWithArtefact CreatePictureBox(IArtefact artefact)
         {
             var pic = new PictureBoxWithArtefact(artefact) { Size = new Size(60, 60), AllowDrop = true };
             pic.MouseDown += (sender, e) =>
@@ -102,7 +102,7 @@ namespace DungeonCrawler
             inventoryLayoutPanel.Controls.Add(box,count % 4, count / 4);
         }
 
-        private PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
+        private static PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
             where TArtefact : class, IArtefact
         {
             var box = new PictureBoxWithArtefact(new EmptyArtefact()) { Size = new Size(60, 60), AllowDrop = true };
@@ -110,13 +110,16 @@ namespace DungeonCrawler
             tooltip.SetToolTip(box, toolTipMsg);
             box.DragEnter += (sender, args) =>
             {
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                 var data = args.Data.GetData(typeof(PictureBoxWithArtefact)) as PictureBoxWithArtefact;
                 if (data.Artefact is TArtefact)
                     args.Effect = DragDropEffects.Move;
                 else args.Effect = DragDropEffects.None;
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
             };
             box.DragDrop += (sender, args) =>
             {
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                 var data = args.Data.GetData(typeof(PictureBoxWithArtefact)) as PictureBoxWithArtefact;
                 var artefactData = data.Artefact;
                 var type = typeof(IGearSet);
@@ -124,8 +127,10 @@ namespace DungeonCrawler
                 Game.CurrentGame.Player.GearSet.Inventory.Add(box.Artefact);
                 var artefactProperty = type.GetProperties().Where(x => x.PropertyType == typeof(TArtefact)).First();
                 data.Artefact = artefactProperty.GetValue(Game.CurrentGame.Player.GearSet) as TArtefact;
+                tooltip.SetToolTip(data, data.Artefact.Name);
                 artefactProperty.SetValue(Game.CurrentGame.Player.GearSet, artefactData as TArtefact);
                 box.Artefact = artefactData;
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
             };
             return box;
         }

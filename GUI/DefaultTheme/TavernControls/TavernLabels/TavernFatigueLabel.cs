@@ -21,7 +21,7 @@ namespace DungeonCrawler
 
         public override void Update()
         {
-            Control.Text = player.Fatigue + "/ \n" + player.MaxFatigue;
+            Control.Text = player.Fatigue + "/ \n" + player.Stats.MaxFatigue;
         }
     }
 }

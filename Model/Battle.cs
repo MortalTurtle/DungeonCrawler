@@ -35,7 +35,7 @@ namespace DungeonCrawler.Model
         private int turn = 1;
         public void EndTurn()
         {
-            if (Player.MaxFatigue - Player.Fatigue < ActionCost)
+            if (Player.Stats.MaxFatigue - Player.Fatigue < ActionCost)
             {
                 Interface.Alert(ActionFailMessage);
                 Interface.ChangeActionButton(null, Color.White, Color.White);
@@ -66,7 +66,7 @@ namespace DungeonCrawler.Model
 
         private void EnemyAction()
         {
-            if (Enemy.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
+            if (Enemy.Stats.MaxFatigue - Enemy.Fatigue >= Enemy.Weapon.AttackCost)
                 Enemy.Attack(Player);
             else
             {

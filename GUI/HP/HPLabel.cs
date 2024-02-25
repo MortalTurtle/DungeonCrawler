@@ -31,7 +31,7 @@ namespace DungeonCrawler
         }
         public void Update()
         {
-            Label.Text = creature.HP + " \\" + '\n' + creature.HPMax;
+            Label.Text = creature.HP + " \\" + '\n' + creature.Stats.MaxHealth;
         }
     }
 }

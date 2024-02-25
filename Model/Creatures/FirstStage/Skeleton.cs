@@ -16,14 +16,14 @@ namespace DungeonCrawler
             get => weapon;
             set => throw new NotImplementedException();
         }
-        public override Stats Stats => new Stats()
+        public override Stats Stats => new()
         {
+            MaxHealth = 40,
+            MaxFatigue = 50,
             Endurance = 3,
             Strength = 1,
             Perception = 2,
             Initiative = 4,
         };
-        public override int HPMax => 40;
-        public override int MaxFatigue => 50;
     }
 }

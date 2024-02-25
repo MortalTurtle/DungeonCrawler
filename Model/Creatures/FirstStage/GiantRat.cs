@@ -15,16 +15,15 @@ namespace DungeonCrawler
             set => throw new NotImplementedException(); 
         }
 
-        private readonly Stats stats = new Stats
+        private readonly Stats stats = new()
         {
+            MaxHealth = 48,
+            MaxFatigue = 40,
             Endurance = 2,
             Initiative = 4,
             Perception = 5,
             Strength = 0
         };
-
         public override Stats Stats => stats;
-        public override int HPMax => 35;
-        public override int MaxFatigue => 40;
     }
 }

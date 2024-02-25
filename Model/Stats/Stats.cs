@@ -8,6 +8,9 @@ namespace DungeonCrawler
 {
     public class Stats
     {
+        public int MaxHealth { get; set; }
+        public int MaxFatigue { get; set; }
+        public int Defense { get; set; }
         public int Strength { get; set; }
         public int Endurance { get; set; }
         public int Perception { get; set; }
@@ -15,6 +18,9 @@ namespace DungeonCrawler
 
         public static readonly Stats PlayerDefault = new()
         {
+            MaxHealth = 80,
+            MaxFatigue = 50,
+            Defense = 0,
             Strength = 1,
             Endurance = 1,
             Perception = 1,
@@ -25,6 +31,9 @@ namespace DungeonCrawler
         {
             return new()
             {
+                MaxHealth = a.MaxHealth + b.MaxHealth,
+                MaxFatigue = a.MaxFatigue + b.MaxFatigue,
+                Defense = a.Defense + b.Defense,
                 Strength = a.Strength + b.Strength,
                 Endurance = a.Endurance + b.Endurance,
                 Perception = a.Perception + b.Perception,
@@ -36,6 +45,9 @@ namespace DungeonCrawler
         {
             return new()
             {
+                MaxHealth = a.MaxHealth - b.MaxHealth,
+                MaxFatigue = a.MaxFatigue - b.MaxFatigue,
+                Defense = a.Defense - b.Defense,
                 Strength = a.Strength - b.Strength,
                 Endurance = a.Endurance - b.Endurance,
                 Perception = a.Perception - b.Perception,

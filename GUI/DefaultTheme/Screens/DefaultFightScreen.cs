@@ -29,7 +29,7 @@ namespace DungeonCrawler
 
         public DefaultFightScreen()
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "images\\player.png");
+            var path = Program.ImagePath + "\\player.png";
             var picture = new PictureBox()
             {
                 ImageLocation = path,

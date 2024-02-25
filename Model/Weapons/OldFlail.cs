@@ -15,11 +15,7 @@ namespace DungeonCrawler
         public int StrongCost => (int)(AttackCost * 1.60);
         public int PreciseCost => (int)(AttackCost * 1.35);
         public string Name => "Old Flail";
-
-        public Stats StatBoost => new Stats();
-
-        public int Defense => 0;
-
+        public Stats StatBoost => new();
         public string PicturePath => Program.ImagePath + "\\empty.png";
     }
 }

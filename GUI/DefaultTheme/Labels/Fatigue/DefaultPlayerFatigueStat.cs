@@ -11,7 +11,7 @@ namespace DungeonCrawler
     {
         public override void Update()
         {
-            this.Label.Text = base.creature.Fatigue + " \\\n" + base.creature.MaxFatigue; 
+            this.Label.Text = base.creature.Fatigue + " \\\n" + base.creature.Stats.MaxFatigue; 
         }
 
         public override Label? GetLabel() => new ControlsFactory<Label>().WithForeColor(Color.DarkBlue)

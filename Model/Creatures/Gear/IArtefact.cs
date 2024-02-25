@@ -11,7 +11,6 @@ namespace DungeonCrawler
     {
         string Name { get; }
         Stats StatBoost { get; }
-        int Defense { get; }
         string PicturePath { get; }
     }
 }
