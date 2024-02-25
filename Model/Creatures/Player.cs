@@ -21,8 +21,9 @@ namespace DungeonCrawler
                 GearSet.Weapon = value;
             }
         }
-        public override Stats Stats => Stats.PlayerDefault;
-        private readonly IGearSet gearSet;
+        public override Stats Stats => GearSet.CreatureStats;
+
+        private readonly IGearSet gearSet = new PlayersStartGearSet(Stats.PlayerDefault);
         public IGearSet GearSet => gearSet;
         private int gold;
         public int Gold 
@@ -37,7 +38,6 @@ namespace DungeonCrawler
         }
         public Player(string name)
         {
-            gearSet = new PlayersStartGearSet(Stats);
             this.Weapon = new Longsword();
             Gold = 50;
             if (name.Length > 30 || name.Contains(' '))

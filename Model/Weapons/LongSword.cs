@@ -21,7 +21,7 @@ namespace DungeonCrawler
 
         public string Name => "Longsword";
 
-        public Stats StatBoost => new();
+        public Stats StatBoost => new() {Strength = 1 };
 
         public string PicturePath => Program.ImagePath + "\\longSword.png";
     }

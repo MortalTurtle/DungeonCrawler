@@ -1,9 +1,11 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,9 @@ namespace DungeonCrawler
         private readonly TableLayoutPanel inventoryLayoutPanel;
         private readonly PictureBoxWithArtefact talismanBox;
         private readonly PictureBoxWithArtefact weaponBox;
-        private readonly TableLayoutPanel statsTable; // 0 - MaxHp 1 - fatigue 2 - defense
+        private readonly TableLayoutPanel statsTable;
+        private readonly Dictionary<PropertyInfo, Label> statPropertyToLabel = new();
+        private readonly PropertyInfo[] statProperties = typeof(Stats).GetProperties().ToArray();
         public GearScreen()
         {
             Controls = new();
@@ -55,6 +59,15 @@ namespace DungeonCrawler
                 toolTip.SetToolTip(picBox, item.Name);
                 AddPictureBoxToInventoryTable(picBox);
             }
+            UpdateStats();
+        }
+
+        private void UpdateStats()
+        {
+            foreach (var property in statProperties)
+            {
+                statPropertyToLabel[property].Text = property.Name + " - " + ((int)property.GetValue(Game.CurrentGame.Player.Stats));
+            }
         }
 
         public virtual Button GetExitButton() => new()
@@ -69,20 +82,19 @@ namespace DungeonCrawler
         public virtual TableLayoutPanel GetStatsPanel() 
         {
             var table = new TableLayoutPanel() {Size = new(200,0)};
-            var statsType = typeof(Stats);
-            var properties = statsType.GetProperties().ToArray();
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200));
-            for (int i = 0; i < 3 + properties.Length; i++)
+            for (int i = 0; i < statProperties.Length; i++)
             {
                 var originalSize = table.Size;
                 table.Size = new(originalSize.Width, originalSize.Width + 40);
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
             }
-            table.Controls.Add(new Label() { Text = "Max HP - ", Size = new Size(200, 18) }, 0, 1);
-            table.Controls.Add(new Label() { Text = "Max fatigue - ", Size = new Size(200, 18) }, 0, 2);
-            table.Controls.Add(new Label() { Text = "Defense - ", Size = new Size(200, 18) }, 0, 3);
-            for (int i = 3; i < 3 + properties.Length;i++)
-                table.Controls.Add(new Label() { Text = properties[i - 3].Name + " - ", Size = new Size(200, 18) }, 0, i);
+            for (int i = 0; i < statProperties.Length; i++)
+            {
+                var label = new Label() { Size = new Size(200, 18) };
+                statPropertyToLabel.Add(statProperties[i], label);
+                table.Controls.Add(label, 0, i);
+            }
             return table;
         }
 
@@ -102,7 +114,7 @@ namespace DungeonCrawler
             inventoryLayoutPanel.Controls.Add(box,count % 4, count / 4);
         }
 
-        private static PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
+        private PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
             where TArtefact : class, IArtefact
         {
             var box = new PictureBoxWithArtefact(new EmptyArtefact()) { Size = new Size(60, 60), AllowDrop = true };
@@ -130,6 +142,7 @@ namespace DungeonCrawler
                 tooltip.SetToolTip(data, data.Artefact.Name);
                 artefactProperty.SetValue(Game.CurrentGame.Player.GearSet, artefactData as TArtefact);
                 box.Artefact = artefactData;
+                UpdateStats();
 #pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
             };
             return box;
