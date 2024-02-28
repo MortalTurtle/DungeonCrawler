@@ -9,5 +9,6 @@ namespace DungeonCrawler
     public interface ILootTable
     {
         int Gold { get; }
+        List<IArtefact> Artefacts { get; }
     }
 }

@@ -9,5 +9,6 @@ namespace DungeonCrawler.Model.Creatures.LootTable
     public class EmptyLootTable : ILootTable
     {
         public int Gold => throw new NotImplementedException();
+        public List<IArtefact> Artefacts => throw new NotImplementedException();
     }
 }

@@ -10,5 +10,6 @@ namespace DungeonCrawler
     {
         public override int GoldFloor => 40;
         public override int GoldCeil => 60;
+        public override List<IArtefact> Artefacts => new();
     }
 }

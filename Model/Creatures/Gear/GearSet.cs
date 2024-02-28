@@ -9,7 +9,7 @@ namespace DungeonCrawler
 {
     public class PlayersStartGearSet : IGearSet
     {
-        private ITalisman talisman;
+        private ITalisman talisman = new EmptyArtefact();
         public ITalisman Talisman 
         {
             get => talisman;
@@ -28,10 +28,6 @@ namespace DungeonCrawler
         public PlayersStartGearSet(Stats playerStats) 
         {
             creatureStats = playerStats;
-            Talisman = new OldBronzeNecklace();
-            for (int i = 0; i < 8; i++)
-                inventory.Add(new OldBronzeNecklace());
-            inventory.Add(new OldFlail());
         }
 
         private void CalculateStatsOnArtefactChange<TArtefact>(ref TArtefact from, TArtefact to)

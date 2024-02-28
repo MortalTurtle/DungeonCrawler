@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class EmptyArtefact : IArtefact
+    public class EmptyArtefact : IArtefact, ITalisman
     {
         public readonly static IArtefact Instance = new EmptyArtefact();
         public Stats StatBoost => new();
