@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DungeonCrawler
 {
@@ -20,18 +21,20 @@ namespace DungeonCrawler
         private readonly TableLayoutPanel statsTable;
         private readonly Dictionary<PropertyInfo, Label> statPropertyToLabel = new();
         private readonly PropertyInfo[] statProperties = typeof(Stats).GetProperties().ToArray();
+        private readonly ToolTip inventoryTT = new();
         public GearScreen()
         {
             Controls = new();
-            talismanBox = GetGenericBox<ITalisman>("Talisman Slot");
+            talismanBox = GetGenericPlayerGearBox<ITalisman>();
+            weaponBox = GetGenericPlayerGearBox<IWeapon>();
+            ToolTip ttip = new ToolTip();
+            ttip.SetToolTip(talismanBox, "Talisman");
+            ttip.SetToolTip(weaponBox, "Weapon");
             talismanBox.Location = new(70, 100);
-            weaponBox = GetGenericBox<IWeapon>("WeaponSlot");
             weaponBox.Location = new(30, 170);
             statsTable = GetStatsPanel();
             statsTable.Location = new(200, 100);
             inventoryLayoutPanel = new TableLayoutPanel() { Size = new(280, 280), Location = new(400, 50) };
-            inventoryLayoutPanel.RowStyles.Clear();
-            inventoryLayoutPanel.ColumnStyles.Clear();
             for (int i = 0; i < 4; i++)
             {
                 inventoryLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 65));
@@ -55,8 +58,6 @@ namespace DungeonCrawler
             foreach (var item in playerGearSet.Inventory)
             {
                 var picBox = CreatePictureBox(item);
-                var toolTip = new ToolTip();
-                toolTip.SetToolTip(picBox, item.Name);
                 AddPictureBoxToInventoryTable(picBox);
             }
             UpdateStats();
@@ -98,9 +99,10 @@ namespace DungeonCrawler
             return table;
         }
 
-        private static PictureBoxWithArtefact CreatePictureBox(IArtefact artefact)
+        private PictureBoxWithArtefact CreatePictureBox(IArtefact artefact)
         {
             var pic = new PictureBoxWithArtefact(artefact) { Size = new Size(60, 60), AllowDrop = true };
+            inventoryTT.SetToolTip(pic, artefact.Name);
             pic.MouseDown += (sender, e) =>
             {
                 pic.DoDragDrop(pic, DragDropEffects.Move);
@@ -114,12 +116,10 @@ namespace DungeonCrawler
             inventoryLayoutPanel.Controls.Add(box,count % 4, count / 4);
         }
 
-        private PictureBoxWithArtefact GetGenericBox<TArtefact>(string toolTipMsg)
+        private PictureBoxWithArtefact GetGenericPlayerGearBox<TArtefact>()
             where TArtefact : class, IArtefact
         {
             var box = new PictureBoxWithArtefact(new EmptyArtefact()) { Size = new Size(60, 60), AllowDrop = true };
-            var tooltip = new ToolTip();
-            tooltip.SetToolTip(box, toolTipMsg);
             box.DragEnter += (sender, args) =>
             {
 #pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
@@ -139,7 +139,7 @@ namespace DungeonCrawler
                 Game.CurrentGame.Player.GearSet.Inventory.Add(box.Artefact);
                 var artefactProperty = type.GetProperties().Where(x => x.PropertyType == typeof(TArtefact)).First();
                 data.Artefact = artefactProperty.GetValue(Game.CurrentGame.Player.GearSet) as TArtefact;
-                tooltip.SetToolTip(data, data.Artefact.Name);
+                inventoryTT.SetToolTip(data, data.Artefact.Name);
                 artefactProperty.SetValue(Game.CurrentGame.Player.GearSet, artefactData as TArtefact);
                 box.Artefact = artefactData;
                 UpdateStats();
